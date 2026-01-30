@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hitung Rata-rata Pembelian CRYPTO</title>
+<style>
+body { font-family: Arial, sans-serif; margin:18px; background:orange; }
+h1 { margin: 10px 0; color:#fff; background:#000; padding:10px 12px; border-radius:6px; }
+
+.toolbar { margin:10px 0; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+.toolbar input, .toolbar button { padding:6px 10px; border:1px solid #aaa; border-radius:6px; }
+.muted { font-size:12px; color:#555; }
+
+table { border-collapse: collapse; width:100%; margin-top:10px; background:#fff; }
+th, td { border:1px solid #ccc; padding:6px; text-align:center; }
+th { background:#eee; }
+
+.summary { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+.card { background:#fff; border-radius:10px; padding:10px; flex:1; min-width:160px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+.small { font-size:12px; color:#555; margin-bottom:4px; }
+
+input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin:0; }
+input[type=number] { -moz-appearance: textfield; }
+
+.pagination { margin-top:10px; text-align:center; }
+.pagination button { margin:0 5px; padding:6px 10px; border-radius:6px; border:1px solid #aaa; cursor:pointer; }
+
+#logoPreview { height:100px; width:auto; border-radius:6px; border:1px solid #ccc; }
+</style>
+</head>
+<body>
+
+<!-- Logo Upload -->
+<div style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
+  <img id="logoPreview" src="" alt="Logo">
+  <input type="file" id="logoUpload" accept="image/*">
+  <div class="muted" id="memoryInfo">Memory: 0 KB</div>
+</div>
+
+<h1>Hitung Rata-rata Pembelian CRYPTO</h1>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <input type="text" id="coinName" placeholder="Nama Coin" style="width:120px;" value="BTC">
+  <input type="date" id="tglBeli">
+  <input type="number" id="hargaBeli" placeholder="Harga Beli">
+  <input type="number" id="totalBeli" placeholder="Total Harga Beli">
+  <button onclick="tambahData()">Tambah</button>
+  <button onclick="downloadExcel()">Download Excel</button>
+  <button id="saveBtn">💾 Save ke Storage</button>
+</div>
+
+<!-- Tabel -->
+<table id="buyTable">
+  <thead>
+    <tr>
+      <th>No</th>
+      <th>Tanggal Beli</th>
+      <th>Harga Saat Beli</th>
+      <th>Total Harga Beli</th>
+      <th>Jumlah Beli</th>
+      <th>Opsi</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<!-- Pagination -->
+<div class="pagination">
+  <button onclick="prevPage()">⏮ Back</button>
+  <span id="pageInfo">Page 0</span>
+  <button onclick="nextPage()">Next ⏭</button>
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="card">
+    <div class="small">Total Jumlah Beli</div>
+    <strong id="totalQtyBuy">0</strong>
+    <div class="muted" id="unitLbl">coin</div>
+  </div>
+  <div class="card">
+    <div class="small">Total Modal</div>
+    <strong id="totalModal">Rp 0</strong>
+  </div>
+  <div class="card">
+    <div class="small">Harga Beli Rata-Rata</div>
+    <strong id="avgBuyPrice">Rp 0</strong>
+    <div class="muted">per coin</div>
+  </div>
+  <div class="card">
+    <div class="small">Input Manual (Harga / Saat Ini)</div>
+    <input type="number" id="manualInput" placeholder="isi angka" style="width:100%;padding:4px;border:1px solid #ccc;border-radius:6px;">
+  </div>
+  <div class="card">
+    <div class="small">Untung / Rugi</div>
+    <strong id="profitLoss">Rp 0</strong>
+  </div>
+  <div class="card">
+    <div class="small">Terakhir Update</div>
+    <strong id="lastUpdate">-</strong>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const buyTbody = document.querySelector("#buyTable tbody");
+let currentPage = 1;
+const rowsPerPage = 5;
+
+// Format Rupiah & Tanggal
+function fmt(n){ return "Rp "+Number(n).toLocaleString("id-ID"); }
+function formatTanggal(tglStr){ return new Date(tglStr).toLocaleDateString('id-ID',{ day:'2-digit', month:'long', year:'numeric' }); }
+
+// Tambah data
+function tambahData(){
+  let tgl = document.getElementById("tglBeli").value;
+  let harga = parseFloat(document.getElementById("hargaBeli").value);
+  let total = parseFloat(document.getElementById("totalBeli").value);
+  let coinName = document.getElementById("coinName").value.trim();
+  if(!tgl || isNaN(harga) || isNaN(total) || coinName==="") return;
+
+  let jumlah = total/harga;
+  let tr = document.createElement("tr");
+  tr.dataset.harga=harga; tr.dataset.total=total; tr.dataset.jumlah=jumlah;
+
+  tr.innerHTML = `
+    <td></td>
+    <td>${formatTanggal(tgl)}</td>
+    <td>${fmt(harga)}</td>
+    <td>${fmt(total)}</td>
+    <td>${jumlah.toFixed(6)}</td>
+    <td>
+      <label><input type="checkbox" class="lockRow"> 🔒</label>
+      <button class="delRow">❌</button>
+    </td>
+  `;
+
+  tr.querySelector(".delRow").addEventListener("click", function(){
+    if(tr.querySelector(".lockRow").checked){ alert("Baris ini terkunci!"); return; }
+    tr.remove(); renumberRows(); recalcAll(); saveData();
+  });
+
+  buyTbody.appendChild(tr);
+  renumberRows(); recalcAll(); saveData();
+  document.getElementById("tglBeli").value=""; document.getElementById("hargaBeli").value=""; document.getElementById("totalBeli").value="";
+  showPage(currentPage);
+}
+
+// Pagination
+function showPage(page){
+  const rows = buyTbody.querySelectorAll("tr");
+  const totalPages = Math.ceil(rows.length/rowsPerPage)||1;
+  if(page<1) page=1;
+  if(page>totalPages) page=totalPages;
+  currentPage=page;
+  rows.forEach((r,i)=>{ r.style.display=(i>=(page-1)*rowsPerPage && i<page*rowsPerPage)?'':'none'; });
+  document.getElementById("pageInfo").textContent=`Page ${rows.length>0?currentPage:0} / ${totalPages}`;
+}
+function nextPage(){ showPage(currentPage+1); }
+function prevPage(){ showPage(currentPage-1); }
+
+// Nomor ulang
+function renumberRows(){ Array.from(buyTbody.querySelectorAll("tr")).forEach((r,i)=>r.children[0].textContent=i+1); }
+
+// Hitung ulang & Untung/Rugi
+function recalcAll(){
+  let rows = Array.from(buyTbody.querySelectorAll("tr"));
+  let totalModal=0, totalQty=0;
+  rows.forEach(r=>{ totalModal+=parseFloat(r.dataset.total); totalQty+=parseFloat(r.dataset.jumlah); });
+  let avg = totalQty?totalModal/totalQty:0;
+  document.getElementById("totalModal").textContent=fmt(totalModal);
+  document.getElementById("totalQtyBuy").textContent=totalQty.toFixed(6);
+  document.getElementById("avgBuyPrice").textContent=fmt(avg);
+
+  let manual = parseFloat(document.getElementById("manualInput").value)||0;
+  let profit = (totalQty*manual)-totalModal;
+  let profitEl = document.getElementById("profitLoss");
+  profitEl.textContent=fmt(profit);
+  profitEl.style.color = profit<0?"red":"green";
+
+  document.getElementById("lastUpdate").textContent=new Date().toLocaleString('id-ID');
+}
+
+// Event input manual
+document.getElementById("manualInput").addEventListener("input", recalcAll);
+document.getElementById("coinName").addEventListener("input", e=>{ document.getElementById("unitLbl").textContent = e.target.value||"coin"; });
+
+// Save / Load Data
+function saveData(){
+  let rows = Array.from(buyTbody.querySelectorAll("tr")).map(r=>({
+    tgl:r.children[1].textContent,
+    harga:parseFloat(r.dataset.harga),
+    total:parseFloat(r.dataset.total),
+    jumlah:parseFloat(r.dataset.jumlah),
+    lock:r.querySelector(".lockRow").checked
+  }));
+  localStorage.setItem("buyData", JSON.stringify(rows));
+}
+function saveToStorage(){
+  const data={
+    coinName:document.getElementById("coinName").value,
+    logo:document.getElementById("logoPreview").src,
+    buy:Array.from(buyTbody.querySelectorAll("tr")).map(r=>({
+      tgl:r.children[1].textContent,
+      harga:parseFloat(r.dataset.harga),
+      total:parseFloat(r.dataset.total),
+      jumlah:parseFloat(r.dataset.jumlah),
+      lock:r.querySelector(".lockRow").checked
+    })),
+    manualInput:parseFloat(document.getElementById("manualInput").value)||0,
+    lastUpdate:new Date().toLocaleString('id-ID')
+  };
+  localStorage.setItem("cryptoData", JSON.stringify(data));
+  document.getElementById("lastUpdate").textContent=data.lastUpdate;
+  alert("Data tersimpan ke Storage!");
+}
+document.getElementById("saveBtn").addEventListener("click", saveToStorage);
+
+function loadData(){
+  const saved = JSON.parse(localStorage.getItem("cryptoData"));
+  if(saved){
+    document.getElementById("coinName").value=saved.coinName||"BTC";
+    document.getElementById("logoPreview").src=saved.logo||"";
+    document.getElementById("manualInput").value=saved.manualInput||0;
+    updateMemory();
+    if(saved.buy){
+      saved.buy.forEach(d=>{
+        let tr=document.createElement("tr");
+        tr.dataset.harga=d.harga; tr.dataset.total=d.total; tr.dataset.jumlah=d.jumlah;
+        tr.innerHTML=`<td></td><td>${d.tgl}</td><td>${fmt(d.harga)}</td><td>${fmt(d.total)}</td><td>${d.jumlah.toFixed(6)}</td>
+          <td><label><input type="checkbox" class="lockRow" ${d.lock?"checked":""}> 🔒</label><button class="delRow">❌</button></td>`;
+        tr.querySelector(".delRow").addEventListener("click", function(){ if(tr.querySelector(".lockRow").checked){ alert("Baris ini terkunci!"); return;} tr.remove(); renumberRows(); recalcAll(); saveData(); });
+        buyTbody.appendChild(tr);
+      });
+    }
+    renumberRows(); recalcAll(); showPage(currentPage);
+  }
+}
+window.addEventListener("load", loadData);
+
+// Upload logo & memory
+function updateMemory(){
+  const logoSrc = document.getElementById("logoPreview").src;
+  let bytes = logoSrc ? (logoSrc.length*2) : 0;
+  document.getElementById("memoryInfo").textContent = "Memory: " + (bytes/1024).toFixed(2) + " KB";
+}
+
+document.getElementById("logoUpload").addEventListener("change", function(e){
+  const file=e.target.files[0];
+  if(file){
+    const reader=new FileReader();
+    reader.onload=function(ev){ 
+      document.getElementById("logoPreview").src=ev.target.result; 
+      localStorage.setItem("appLogo", ev.target.result); 
+      updateMemory(); 
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Download Excel
+function downloadExcel(){
+  let rows=[["No","Tanggal Beli","Harga Saat Beli","Total Harga Beli","Jumlah Beli"]];
+  Array.from(buyTbody.querySelectorAll("tr")).forEach((r,i)=>{ rows.push([i+1,r.children[1].textContent,r.children[2].textContent,r.children[3].textContent,r.children[4].textContent]); });
+  let ws=XLSX.utils.aoa_to_sheet(rows);
+  let wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,"Pembelian");
+  XLSX.writeFile(wb,"data_crypto.xlsx");
+}
+</script>
+</body>
+</html>
+
+
