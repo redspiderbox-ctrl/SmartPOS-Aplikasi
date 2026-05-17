@@ -2,307 +2,268 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern POS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { inter: ['Inter', 'sans-serif'] },
-          colors: {
-            primary: '#4F46E5', secondary: '#10B981', dark: '#1E293B'
-          }
-        }
-      }
-    }
-  </script>
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
-    .sidebar { transition: transform 0.3s ease-in-out; }
-    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-    .fade-in { animation: fadeIn 0.5s ease-in; }
+    body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+    .fade-in { animation: fadeIn 0.3s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-    .loader { border-top-color: #4F46E5; -webkit-animation: spinner 1.5s linear infinite; animation: spinner 1.5s linear infinite; }
-    @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+    .sidebar-link:hover { background: rgba(255,255,255,0.1); }
+    .sidebar-link.active { background: rgba(255,255,255,0.2); border-left: 4px solid #fff; }
   </style>
 </head>
-<body class="font-inter text-gray-800">
+<body class="text-gray-800">
 
-  <!-- LOADING SCREEN -->
-  <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
-    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-16 w-16 mb-4"></div>
-    <p class="text-gray-500 font-medium">Memuat Aplikasi Kasir...</p>
-  </div>
+  <!-- API URL CONFIG -->
+  <script>
+    // GANTI INI DENGAN URL WEB APP ANDA SETELAH DEPLOY
+    const API_URL = 'MASUKKAN_URL_WEB_APP_ANDA_DISINI';
+  </script>
 
-  <!-- LOGIN SCREEN -->
-  <div id="login-screen" class="hidden min-h-screen flex items-center justify-center bg-gray-50 p-4">
-    <div class="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg fade-in">
-      <div class="text-center mb-8">
-        <div class="w-16 h-16 bg-primary rounded-2xl mx-auto flex items-center justify-center mb-4">
-          <i class="fas fa-cash-register text-white text-2xl"></i>
-        </div>
-        <h2 class="text-2xl font-bold text-gray-800">POS Kasir Pro</h2>
-        <p class="text-gray-500 text-sm mt-1">Silakan login untuk melanjutkan</p>
+  <!-- LOGIN VIEW -->
+  <div id="loginView" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 to-purple-700">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md fade-in">
+      <div class="text-center mb-6">
+        <i class="fas fa-cash-register text-indigo-600 text-4xl mb-3"></i>
+        <h1 class="text-2xl font-bold text-gray-800">KasirPOS</h1>
+        <p class="text-gray-500 text-sm">Silakan login untuk melanjutkan</p>
       </div>
-      <form id="login-form">
-        <div class="mb-5">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
-          <input type="text" id="username" class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-primary focus:border-primary transition" placeholder="Masukkan username" required>
+      <div id="loginError" class="hidden bg-red-100 text-red-700 p-3 rounded-lg text-sm mb-4 fade-in"></div>
+      <div class="space-y-4">
+        <div class="relative">
+          <i class="fas fa-user absolute left-3 top-3.5 text-gray-400"></i>
+          <input type="text" id="loginUsername" placeholder="Username" class="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition">
         </div>
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input type="password" id="password" class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-primary focus:border-primary transition" placeholder="Masukkan password" required>
+        <div class="relative">
+          <i class="fas fa-lock absolute left-3 top-3.5 text-gray-400"></i>
+          <input type="password" id="loginPassword" placeholder="Password" class="w-full pl-10 pr-4 py-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition">
         </div>
-        <button type="submit" class="w-full bg-primary hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition duration-300">
-          <i class="fas fa-sign-in-alt mr-2"></i> Login
+        <button onclick="handleLogin()" id="btnLogin" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold transition flex justify-center items-center">
+          <span id="loginText">Login</span>
+          <i class="fas fa-spinner fa-spin ml-2 hidden" id="loginSpinner"></i>
         </button>
-        <p id="login-error" class="text-red-500 text-sm mt-4 text-center hidden"></p>
-      </form>
+      </div>
     </div>
   </div>
 
-  <!-- MAIN APP -->
-  <div id="main-app" class="hidden min-h-screen flex flex-col md:flex-row">
-    
-    <!-- SIDEBAR -->
-    <div id="sidebar" class="hidden md:flex w-64 bg-dark text-white flex-col fixed h-full z-40">
+  <!-- DASHBOARD VIEW -->
+  <div id="dashboardView" class="hidden min-h-screen flex">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white flex-col hidden md:flex transition-all">
       <div class="p-6 border-b border-gray-700">
-        <h1 class="text-xl font-bold flex items-center"><i class="fas fa-store mr-3 text-secondary"></i> POS Pro</h1>
+        <h2 class="text-xl font-bold"><i class="fas fa-store mr-2"></i> KasirPOS</h2>
       </div>
-      <div class="flex-1 p-4 space-y-2">
-        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition">
-          <i class="fas fa-chart-pie mr-3"></i> Dashboard
-        </button>
-        <button onclick="switchTab('kasir')" id="tab-kasir" class="w-full flex items-center px-4 py-3 rounded-xl text-gray-300 hover:bg-gray-700 hover:text-white transition">
-          <i class="fas fa-cash-register mr-3"></i> Kasir
-        </button>
-      </div>
+      <nav class="flex-1 p-4 space-y-2">
+        <a href="#" onclick="switchTab('pos')" class="sidebar-link active flex items-center p-3 rounded-lg transition" id="nav-pos">
+          <i class="fas fa-cash-register w-6"></i> Kasir
+        </a>
+        <a href="#" onclick="switchTab('products')" class="sidebar-link flex items-center p-3 rounded-lg transition" id="nav-products">
+          <i class="fas fa-boxes-stacked w-6"></i> Produk
+        </a>
+        <a href="#" onclick="switchTab('history')" class="sidebar-link flex items-center p-3 rounded-lg transition" id="nav-history">
+          <i class="fas fa-receipt w-6"></i> Riwayat
+        </a>
+      </nav>
       <div class="p-4 border-t border-gray-700">
-        <p class="text-sm text-gray-400 px-4">Role: <span class="text-secondary font-semibold">admin123</span></p>
-        <button onclick="logout()" class="w-full flex items-center px-4 py-3 mt-2 rounded-xl text-gray-300 hover:bg-red-600 hover:text-white transition">
-          <i class="fas fa-sign-out-alt mr-3"></i> Logout
-        </button>
-      </div>
-    </div>
-
-    <!-- MOBILE NAV -->
-    <div class="md:hidden bg-dark text-white p-4 flex justify-between items-center fixed w-full z-40">
-      <h1 class="text-lg font-bold"><i class="fas fa-store mr-2 text-secondary"></i> POS Pro</h1>
-      <button onclick="toggleMobileSidebar()" class="text-xl"><i class="fas fa-bars"></i></button>
-    </div>
-
-    <!-- CONTENT AREA -->
-    <div class="flex-1 md:ml-64 mt-16 md:mt-0 p-4 md:p-8">
-      
-      <!-- DASHBOARD TAB -->
-      <div id="content-dashboard" class="hidden fade-in">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">Dashboard</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover transition">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm text-gray-500 font-medium">Pendapatan Hari Ini</p>
-                <h3 class="text-2xl font-bold mt-1" id="dash-revenue">Rp 0</h3>
-              </div>
-              <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                <i class="fas fa-dollar-sign text-secondary text-xl"></i>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover transition">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm text-gray-500 font-medium">Total Transaksi</p>
-                <h3 class="text-2xl font-bold mt-1" id="dash-transactions">0</h3>
-              </div>
-              <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
-                <i class="fas fa-receipt text-primary text-xl"></i>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover transition">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-sm text-gray-500 font-medium">Status</p>
-                <h3 class="text-2xl font-bold mt-1 text-secondary">Online</h3>
-              </div>
-              <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                <i class="fas fa-wifi text-secondary text-xl"></i>
-              </div>
-            </div>
+        <div class="flex items-center space-x-3 mb-4">
+          <div class="bg-indigo-500 w-10 h-10 rounded-full flex items-center justify-center font-bold">A</div>
+          <div>
+            <p class="font-semibold text-sm" id="loggedUser">admin</p>
+            <p class="text-xs text-gray-400" id="loggedRole">admin123</p>
           </div>
         </div>
+        <button onclick="handleLogout()" class="w-full bg-red-600 hover:bg-red-700 py-2 rounded-lg text-sm font-semibold transition">
+          <i class="fas fa-sign-out-alt mr-1"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+      <!-- Mobile Header -->
+      <div class="md:hidden bg-gray-900 text-white p-4 flex justify-between items-center">
+        <h2 class="font-bold"><i class="fas fa-store mr-2"></i> KasirPOS</h2>
+        <button onclick="toggleMobileMenu()"><i class="fas fa-bars text-xl"></i></button>
       </div>
 
-      <!-- KASIR TAB -->
-      <div id="content-kasir" class="hidden fade-in">
-        <div class="flex flex-col lg:flex-row gap-6 h-[calc(100vh-8rem)]">
-          
-          <!-- Produk List -->
-          <div class="flex-1 overflow-hidden flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100">
-            <div class="p-4 border-b flex justify-between items-center">
-              <h2 class="text-lg font-bold">Daftar Produk</h2>
-              <input type="text" id="search-product" onkeyup="filterProducts()" placeholder="Cari produk..." class="px-4 py-2 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+      <!-- POS TAB -->
+      <div id="tab-pos" class="p-6 fade-in">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Transaksi Baru</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- Product List -->
+          <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            <div class="mb-4">
+              <input type="text" id="searchProduct" oninput="renderProducts()" placeholder="Cari produk..." class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
             </div>
-            <div id="product-list" class="flex-1 overflow-y-auto p-4 grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-min">
-              <!-- Products injected here -->
+            <div id="productGrid" class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
+              <!-- Products will be injected here -->
             </div>
           </div>
 
           <!-- Cart -->
-          <div class="w-full lg:w-96 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col">
-            <div class="p-4 border-b">
-              <h2 class="text-lg font-bold">Keranjang Belanja</h2>
+          <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 flex flex-col">
+            <h3 class="text-lg font-bold mb-4 border-b pb-2"><i class="fas fa-shopping-cart text-indigo-600 mr-2"></i> Keranjang</h3>
+            <div id="cartList" class="flex-1 overflow-y-auto mb-4 space-y-3">
+              <p class="text-gray-400 text-center text-sm py-10">Keranjang kosong</p>
             </div>
-            <div id="cart-list" class="flex-1 overflow-y-auto p-4 space-y-3">
-              <p id="empty-cart" class="text-center text-gray-400 text-sm py-10">Keranjang kosong</p>
-            </div>
-            <div class="p-4 border-t bg-gray-50 rounded-b-2xl">
-              <div class="flex justify-between mb-2">
-                <span class="text-gray-600">Total</span>
-                <span class="text-xl font-bold text-primary" id="cart-total">Rp 0</span>
+            <div class="border-t pt-4 space-y-2">
+              <div class="flex justify-between font-semibold text-lg">
+                <span>Total:</span>
+                <span id="cartTotal" class="text-indigo-600">Rp 0</span>
               </div>
-              <button onclick="openPaymentModal()" class="w-full bg-secondary hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition duration-300 mt-2">
-                <i class="fas fa-credit-card mr-2"></i> Bayar Sekarang
+              <button onclick="handleCheckout()" id="btnCheckout" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold transition mt-2">
+                Bayar Sekarang
               </button>
             </div>
           </div>
-          
         </div>
       </div>
 
-    </div>
-  </div>
+      <!-- PRODUCTS TAB -->
+      <div id="tab-products" class="p-6 hidden fade-in">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Manajemen Stok</h2>
+        <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b text-gray-500 text-sm">
+                <th class="pb-3 font-medium">ID</th>
+                <th class="pb-3 font-medium">Nama Produk</th>
+                <th class="pb-3 font-medium">Harga</th>
+                <th class="pb-3 font-medium">Stok</th>
+              </tr>
+            </thead>
+            <tbody id="productTable" class="divide-y divide-gray-100">
+              <!-- Data will be injected here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-  <!-- MODAL BAYAR -->
-  <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 fade-in">
-    <div class="bg-white w-full max-w-md rounded-2xl p-8">
-      <h2 class="text-xl font-bold mb-6 text-center">Proses Pembayaran</h2>
-      <p class="text-center text-2xl font-bold text-primary mb-6">Total: <span id="pay-total">Rp 0</span></p>
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700 mb-1">Uang Diterima</label>
-        <input type="number" id="pay-amount" oninput="calculateChange()" class="w-full px-4 py-3 rounded-xl border focus:ring-2 focus:ring-primary focus:border-primary transition text-lg" placeholder="0">
+      <!-- HISTORY TAB -->
+      <div id="tab-history" class="p-6 hidden fade-in">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">Riwayat Transaksi</h2>
+        <div class="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <p class="text-gray-500 text-center py-10">Fitur riwayat menampilkan data dari sheet Transactions.</p>
+        </div>
       </div>
-      <p class="text-right text-lg font-semibold mb-6">Kembalian: <span id="pay-change" class="text-secondary">Rp 0</span></p>
-      <div class="flex gap-3">
-        <button onclick="closePaymentModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 py-3 rounded-xl font-semibold transition">Batal</button>
-        <button onclick="submitOrder()" id="btn-submit-order" class="flex-1 bg-primary hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold transition">Simpan</button>
-      </div>
-    </div>
+    </main>
   </div>
 
   <script>
-    let products = [];
+    // STATE
     let cart = [];
-    let currentTab = 'dashboard';
+    let products = [];
+    let currentUser = null;
 
-    // INIT
-    window.onload = function() {
-      setTimeout(() => {
-        document.getElementById('loading-screen').classList.add('hidden');
-        document.getElementById('login-screen').classList.remove('hidden');
-      }, 1000);
-    };
-
-    // LOGIN
-    document.getElementById('login-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const u = document.getElementById('username').value;
-      const p = document.getElementById('password').value;
+    // LOGIN LOGIC
+    async function handleLogin() {
+      const u = document.getElementById('loginUsername').value;
+      const p = document.getElementById('loginPassword').value;
+      const errEl = document.getElementById('loginError');
       
-      document.getElementById('login-error').classList.add('hidden');
+      if(!u || !p) { errEl.textContent = 'Harap isi semua field!'; errEl.classList.remove('hidden'); return; }
       
-      google.script.run.withSuccessHandler(res => {
-        if(res.success) {
-          document.getElementById('login-screen').classList.add('hidden');
-          document.getElementById('main-app').classList.remove('hidden');
-          initApp();
+      document.getElementById('loginText').classList.add('hidden');
+      document.getElementById('loginSpinner').classList.remove('hidden');
+      
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'login', username: u, password: p })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+          currentUser = data.user;
+          document.getElementById('loggedUser').textContent = data.user.username;
+          document.getElementById('loggedRole').textContent = data.user.role;
+          document.getElementById('loginView').classList.add('hidden');
+          document.getElementById('dashboardView').classList.remove('hidden');
+          loadProducts();
         } else {
-          document.getElementById('login-error').textContent = res.message;
-          document.getElementById('login-error').classList.remove('hidden');
+          errEl.textContent = data.message;
+          errEl.classList.remove('hidden');
         }
-      }).verifyLogin(u, p);
-    });
+      } catch (e) {
+        errEl.textContent = 'Gagal terhubung ke server. Cek API URL!';
+        errEl.classList.remove('hidden');
+      } finally {
+        document.getElementById('loginText').classList.remove('hidden');
+        document.getElementById('loginSpinner').classList.add('hidden');
+      }
+    }
 
-    function logout() {
-      document.getElementById('main-app').classList.add('hidden');
-      document.getElementById('login-screen').classList.remove('hidden');
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
+    function handleLogout() {
+      currentUser = null;
       cart = [];
+      document.getElementById('dashboardView').classList.add('hidden');
+      document.getElementById('loginView').classList.remove('hidden');
+      document.getElementById('loginUsername').value = '';
+      document.getElementById('loginPassword').value = '';
     }
 
-    function initApp() {
-      switchTab('kasir'); // Default ke kasir
-      loadProducts();
-      loadDashboard();
+    // PRODUCTS LOGIC
+    async function loadProducts() {
+      try {
+        const res = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'getProducts' }) });
+        const data = await res.json();
+        if(data.success) {
+          products = data.data;
+          renderProducts();
+          renderProductTable();
+        }
+      } catch (e) {
+        alert('Gagal memuat produk');
+      }
     }
 
-    function switchTab(tab) {
-      currentTab = tab;
-      document.getElementById('content-dashboard').classList.add('hidden');
-      document.getElementById('content-kasir').classList.add('hidden');
-      document.getElementById('content-' + tab).classList.remove('hidden');
+    function renderProducts() {
+      const search = document.getElementById('searchProduct').value.toLowerCase();
+      const filtered = products.filter(p => p.name.toLowerCase().includes(search));
+      const grid = document.getElementById('productGrid');
       
-      document.getElementById('tab-dashboard').classList.remove('bg-gray-700', 'text-white');
-      document.getElementById('tab-kasir').classList.remove('bg-gray-700', 'text-white');
-      document.getElementById('tab-' + tab).classList.add('bg-gray-700', 'text-white');
-      
-      if(tab === 'dashboard') loadDashboard();
-    }
+      if(filtered.length === 0) {
+        grid.innerHTML = '<div class="col-span-full text-center text-gray-400 py-10">Produk tidak ditemukan</div>';
+        return;
+      }
 
-    function toggleMobileSidebar() {
-      const sb = document.getElementById('sidebar');
-      sb.classList.toggle('hidden');
-      sb.classList.toggle('absolute');
-    }
-
-    // PRODUCTS
-    function loadProducts() {
-      google.script.run.withSuccessHandler(res => {
-        products = res;
-        renderProducts(products);
-      }).getProducts();
-    }
-
-    function renderProducts(data) {
-      const container = document.getElementById('product-list');
-      container.innerHTML = '';
-      data.forEach(p => {
-        const isDisabled = p.stock <= 0;
-        container.innerHTML += `
-          <div class="border rounded-xl p-4 flex flex-col justify-between card-hover transition ${isDisabled ? 'opacity-50 bg-gray-50' : 'bg-white cursor-pointer'}" onclick="${isDisabled ? '' : `addToCart(${p.id})`}">
-            <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center mb-3">
-              <i class="fas fa-box text-primary"></i>
-            </div>
-            <h3 class="font-semibold text-sm truncate">${p.name}</h3>
-            <p class="text-primary font-bold mt-1">Rp ${p.price.toLocaleString('id-ID')}</p>
-            <p class="text-xs text-gray-400 mt-1">Stok: ${p.stock}</p>
+      grid.innerHTML = filtered.map(p => `
+        <div class="border rounded-xl p-4 hover:shadow-md hover:border-indigo-300 transition cursor-pointer flex flex-col justify-between" onclick="addToCart(${p.id})">
+          <div class="bg-indigo-50 text-indigo-600 rounded-lg w-10 h-10 flex items-center justify-center mb-3">
+            <i class="fas fa-box"></i>
           </div>
-        `;
-      });
+          <h4 class="font-semibold text-sm text-gray-800">${p.name}</h4>
+          <p class="text-indigo-600 font-bold mt-1">Rp ${Number(p.price).toLocaleString('id-ID')}</p>
+          <p class="text-xs text-gray-400 mt-1">Stok: ${p.stock}</p>
+        </div>
+      `).join('');
     }
 
-    function filterProducts() {
-      const q = document.getElementById('search-product').value.toLowerCase();
-      const filtered = products.filter(p => p.name.toLowerCase().includes(q));
-      renderProducts(filtered);
+    function renderProductTable() {
+      const tbody = document.getElementById('productTable');
+      tbody.innerHTML = products.map(p => `
+        <tr class="hover:bg-gray-50 transition">
+          <td class="py-3 text-sm text-gray-500">${p.id}</td>
+          <td class="py-3 font-medium text-sm">${p.name}</td>
+          <td class="py-3 text-sm">Rp ${Number(p.price).toLocaleString('id-ID')}</td>
+          <td class="py-3 text-sm ${p.stock < 5 ? 'text-red-600 font-semibold' : 'text-gray-600'}">${p.stock}</td>
+        </tr>
+      `).join('');
     }
 
-    // CART
+    // CART LOGIC
     function addToCart(id) {
-      const product = products.find(p => p.id === id);
-      const existing = cart.find(item => item.id === id);
-      
+      const product = products.find(p => p.id == id);
+      if(!product || product.stock <= 0) return alert('Stok habis!');
+
+      const existing = cart.find(c => c.id == id);
       if(existing) {
         if(existing.qty < product.stock) existing.qty++;
-        else alert('Stok tidak mencukupi!');
+        else return alert('Stok tidak mencukupi!');
       } else {
         cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
       }
@@ -310,100 +271,91 @@
     }
 
     function removeFromCart(id) {
-      cart = cart.filter(item => item.id !== id);
+      cart = cart.filter(c => c.id != id);
       renderCart();
     }
 
     function renderCart() {
-      const container = document.getElementById('cart-list');
-      const emptyMsg = document.getElementById('empty-cart');
-      container.innerHTML = '';
-      
+      const list = document.getElementById('cartList');
+      const totalEl = document.getElementById('cartTotal');
+      let total = 0;
+
       if(cart.length === 0) {
-        container.innerHTML = '<p id="empty-cart" class="text-center text-gray-400 text-sm py-10">Keranjang kosong</p>';
-      } else {
-        let total = 0;
-        cart.forEach(item => {
-          const sub = item.price * item.qty;
-          total += sub;
-          container.innerHTML += `
-            <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl">
-              <div class="flex-1">
-                <p class="font-medium text-sm">${item.name}</p>
-                <p class="text-xs text-gray-500">${item.qty} x Rp ${item.price.toLocaleString('id-ID')}</p>
-              </div>
-              <div class="flex items-center space-x-2">
-                <span class="font-semibold text-sm">Rp ${sub.toLocaleString('id-ID')}</span>
-                <button onclick="removeFromCart(${item.id})" class="text-red-400 hover:text-red-600 ml-2"><i class="fas fa-trash-alt text-xs"></i></button>
-              </div>
+        list.innerHTML = '<p class="text-gray-400 text-center text-sm py-10">Keranjang kosong</p>';
+        totalEl.textContent = 'Rp 0';
+        return;
+      }
+
+      list.innerHTML = cart.map(c => {
+        const sub = c.price * c.qty;
+        total += sub;
+        return `
+          <div class="flex justify-between items-center bg-gray-50 p-3 rounded-xl fade-in">
+            <div class="flex-1">
+              <p class="font-medium text-sm text-gray-800">${c.name}</p>
+              <p class="text-xs text-gray-500">${c.qty} x Rp ${Number(c.price).toLocaleString('id-ID')}</p>
             </div>
-          `;
+            <div class="flex items-center space-x-3">
+              <span class="font-semibold text-sm text-indigo-600">Rp ${Number(sub).toLocaleString('id-ID')}</span>
+              <button onclick="removeFromCart(${c.id})" class="text-red-400 hover:text-red-600 transition"><i class="fas fa-trash-alt text-xs"></i></button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      totalEl.textContent = `Rp ${Number(total).toLocaleString('id-ID')}`;
+    }
+
+    // CHECKOUT LOGIC
+    async function handleCheckout() {
+      if(cart.length === 0) return alert('Keranjang masih kosong!');
+      if(!confirm('Proses pembayaran?')) return;
+
+      const btn = document.getElementById('btnCheckout');
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'checkout', cart: cart, cashier: currentUser.username })
         });
-        document.getElementById('cart-total').innerText = `Rp ${total.toLocaleString('id-ID')}`;
+        const data = await res.json();
+        
+        if(data.success) {
+          alert('Transaksi berhasil!');
+          cart = [];
+          renderCart();
+          loadProducts(); // Refresh stok
+        } else {
+          alert('Gagal: ' + data.message);
+        }
+      } catch (e) {
+        alert('Gagal terhubung ke server');
+      } finally {
+        btn.innerHTML = 'Bayar Sekarang';
+        btn.disabled = false;
       }
     }
 
-    // PAYMENT
-    function openPaymentModal() {
-      if(cart.length === 0) return alert('Keranjang masih kosong!');
-      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      document.getElementById('pay-total').innerText = `Rp ${total.toLocaleString('id-ID')}`;
-      document.getElementById('pay-amount').value = '';
-      document.getElementById('pay-change').innerText = 'Rp 0';
-      document.getElementById('payment-modal').classList.remove('hidden');
+    // UI TABS & NAVIGATION
+    function switchTab(tab) {
+      ['pos', 'products', 'history'].forEach(t => {
+        document.getElementById(`tab-${t}`).classList.add('hidden');
+        document.getElementById(`nav-${t}`).classList.remove('active');
+      });
+      document.getElementById(`tab-${tab}`).classList.remove('hidden');
+      document.getElementById(`nav-${tab}`).classList.add('active');
     }
 
-    function closePaymentModal() {
-      document.getElementById('payment-modal').classList.add('hidden');
-    }
-
-    function calculateChange() {
-      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      const paid = parseFloat(document.getElementById('pay-amount').value) || 0;
-      const change = paid - total;
-      document.getElementById('pay-change').innerText = `Rp ${Math.max(0, change).toLocaleString('id-ID')}`;
-    }
-
-    function submitOrder() {
-      const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-      const paid = parseFloat(document.getElementById('pay-amount').value) || 0;
-      
-      if(paid < total) return alert('Uang yang diterima kurang!');
-      
-      const change = paid - total;
-      const btn = document.getElementById('btn-submit-order');
-      btn.innerText = 'Memproses...';
-      btn.disabled = true;
-
-      const orderData = {
-        cashier: 'admin123',
-        items: cart,
-        total: total,
-        paid: paid,
-        change: change
-      };
-
-      google.script.run.withSuccessHandler(res => {
-        if(res.success) {
-          alert('Transaksi berhasil! ID: ' + res.txnId);
-          cart = [];
-          renderCart();
-          closePaymentModal();
-          loadProducts(); // Refresh stok
-        } else {
-          alert('Gagal: ' + res.message);
-        }
-        btn.innerText = 'Simpan';
-        btn.disabled = false;
-      }).processOrder(orderData);
-    }
-
-    // DASHBOARD
-    function loadDashboard() {
-      google.script.run.withSuccessHandler(res => {
-        document.getElementById('dash-revenue').innerText = `Rp ${Number(res.totalRevenue).toLocaleString('id-ID')}`;
-        document.getElementById('dash-transactions').innerText = res.totalTransactions;
-      }).getDashboardData();
+    function toggleMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('hidden');
+      sidebar.classList.toggle('fixed');
+      sidebar.classList.toggle('inset-0');
+      sidebar.classList.toggle('z-50');
+      sidebar.classList.toggle('flex');
     }
   </script>
 </body>
