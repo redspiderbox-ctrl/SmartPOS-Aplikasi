@@ -12,15 +12,9 @@
     .fade-in { animation: fadeIn 0.3s ease-in; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .pos-item:active { transform: scale(0.95); }
-    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #f1f1f1; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
-    
-    /* Konfigurasi API - PASTE URL WEB APP ANDA DI SINI */
-    :root {
-      --API_URL: "https://script.google.com/macros/s/AKfycbyfM4qbe4x0JquAOrdP2lXauHt2Is1iGh6gW2Zlmlbm8N5Y8No6CYeE7WVsqJIyoe4w/exec"; 
-    }
   </style>
 </head>
 <body class="overflow-hidden h-screen">
@@ -52,118 +46,119 @@
     </div>
   </div>
 
-  <!-- MAIN APP -->
-  <div id="mainApp" class="hidden h-screen flex">
-    <!-- Sidebar -->
-    <div id="sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col fixed h-full z-20 transform -translate-x-full md:translate-x-0 sidebar">
-      <div class="p-6 border-b border-slate-100">
-        <h1 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <i class="fas fa-cash-register text-slate-600"></i> KasirPOS
-        </h1>
-      </div>
-      <nav class="flex-1 p-4 space-y-2">
-        <button onclick="showPage('dashboard')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition font-medium">
-          <i class="fas fa-chart-pie w-5"></i> Dashboard
-        </button>
-        <button onclick="showPage('pos')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition font-medium">
-          <i class="fas fa-store w-5"></i> Kasir (POS)
-        </button>
-        <button onclick="showPage('products')" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition font-medium">
-          <i class="fas fa-boxes-stacked w-5"></i> Produk
-        </button>
-      </nav>
-      <div class="p-4 border-t border-slate-100">
-        <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition font-medium">
-          <i class="fas fa-sign-out-alt w-5"></i> Logout
-        </button>
-      </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="flex-1 md:ml-64 overflow-y-auto">
-      <!-- Topbar Mobile -->
-      <div class="md:hidden bg-white p-4 border-b border-slate-200 flex justify-between items-center sticky top-0 z-10">
-        <button onclick="toggleSidebar()"><i class="fas fa-bars text-xl text-slate-700"></i></button>
-        <h1 class="font-bold text-slate-800">KasirPOS</h1>
-        <div></div>
+  <!-- MAIN APP (Diperbaiki: tidak ada class hidden dan flex bersamaan) -->
+  <div id="mainApp" style="display: none;" class="h-screen">
+    <div class="flex h-full">
+      <!-- Sidebar -->
+      <div id="sidebar" class="w-64 bg-white border-r border-slate-200 flex flex-col fixed h-full z-20 transform -translate-x-full md:translate-x-0 sidebar">
+        <div class="p-6 border-b border-slate-100">
+          <h1 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+            <i class="fas fa-cash-register text-slate-600"></i> KasirPOS
+          </h1>
+        </div>
+        <nav class="flex-1 p-4 space-y-2">
+          <button onclick="showPage('dashboard', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition font-medium">
+            <i class="fas fa-chart-pie w-5"></i> Dashboard
+          </button>
+          <button onclick="showPage('pos', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition font-medium">
+            <i class="fas fa-store w-5"></i> Kasir (POS)
+          </button>
+          <button onclick="showPage('products', this)" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 transition font-medium">
+            <i class="fas fa-boxes-stacked w-5"></i> Produk
+          </button>
+        </nav>
+        <div class="p-4 border-t border-slate-100">
+          <button onclick="handleLogout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition font-medium">
+            <i class="fas fa-sign-out-alt w-5"></i> Logout
+          </button>
+        </div>
       </div>
 
-      <!-- PAGE: DASHBOARD -->
-      <div id="page-dashboard" class="page p-6 hidden fade-in">
-        <h2 class="text-2xl font-bold text-slate-800 mb-6">Dashboard</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover transition">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500"><i class="fas fa-money-bill-wave"></i></div>
-              <span class="text-sm text-slate-500">Pendapatan</span>
+      <!-- Main Content -->
+      <div class="flex-1 md:ml-64 overflow-y-auto h-full">
+        <!-- Topbar Mobile -->
+        <div class="md:hidden bg-white p-4 border-b border-slate-200 flex justify-between items-center sticky top-0 z-10">
+          <button onclick="toggleSidebar()"><i class="fas fa-bars text-xl text-slate-700"></i></button>
+          <h1 class="font-bold text-slate-800">KasirPOS</h1>
+          <div></div>
+        </div>
+
+        <!-- PAGE: DASHBOARD -->
+        <div id="page-dashboard" class="page p-6 hidden fade-in">
+          <h2 class="text-2xl font-bold text-slate-800 mb-6">Dashboard</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover transition">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-500"><i class="fas fa-money-bill-wave"></i></div>
+                <span class="text-sm text-slate-500">Pendapatan</span>
+              </div>
+              <h3 class="text-3xl font-bold text-slate-800" id="dashRevenue">Rp 0</h3>
             </div>
-            <h3 class="text-3xl font-bold text-slate-800" id="dashRevenue">Rp 0</h3>
-          </div>
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover transition">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-500"><i class="fas fa-receipt"></i></div>
-              <span class="text-sm text-slate-500">Transaksi</span>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover transition">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center text-green-500"><i class="fas fa-receipt"></i></div>
+                <span class="text-sm text-slate-500">Transaksi</span>
+              </div>
+              <h3 class="text-3xl font-bold text-slate-800" id="dashTx">0</h3>
             </div>
-            <h3 class="text-3xl font-bold text-slate-800" id="dashTx">0</h3>
-          </div>
-          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover transition">
-            <div class="flex items-center justify-between mb-4">
-              <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-500"><i class="fas fa-boxes-stacked"></i></div>
-              <span class="text-sm text-slate-500">Total Produk</span>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 card-hover transition">
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center text-purple-500"><i class="fas fa-boxes-stacked"></i></div>
+                <span class="text-sm text-slate-500">Total Produk</span>
+              </div>
+              <h3 class="text-3xl font-bold text-slate-800" id="dashProd">0</h3>
             </div>
-            <h3 class="text-3xl font-bold text-slate-800" id="dashProd">0</h3>
-          </div>
-        </div>
-      </div>
-
-      <!-- PAGE: POS -->
-      <div id="page-pos" class="page hidden fade-in h-screen flex flex-col md:flex-row">
-        <!-- Produk List -->
-        <div class="flex-1 p-6 overflow-y-auto bg-slate-50">
-          <div class="flex justify-between items-center mb-6 sticky top-0 bg-slate-50 pt-2 pb-4 z-10">
-            <h2 class="text-2xl font-bold text-slate-800">Kasir</h2>
-            <input type="text" id="searchProduct" onkeyup="filterProducts()" placeholder="Cari produk..." class="border border-slate-200 rounded-xl px-4 py-2 w-48 focus:ring-2 focus:ring-slate-800 outline-none">
-          </div>
-          <div id="posProductList" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <!-- Produk akan dirender disini -->
           </div>
         </div>
 
-        <!-- Cart -->
-        <div class="w-full md:w-96 bg-white border-l border-slate-200 flex flex-col h-full">
-          <div class="p-6 border-b border-slate-100">
-            <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-              <i class="fas fa-shopping-cart text-slate-500"></i> Keranjang <span id="cartCount" class="text-sm bg-slate-800 text-white px-2 py-0.5 rounded-full">0</span>
-            </h3>
-          </div>
-          <div id="cartItems" class="flex-1 p-6 overflow-y-auto space-y-4">
-            <p class="text-center text-slate-400 mt-10">Belum ada item</p>
-          </div>
-          <div class="p-6 border-t border-slate-100 bg-slate-50">
-            <div class="flex justify-between mb-2 text-slate-600"><span>Subtotal</span><span id="cartSubtotal">Rp 0</span></div>
-            <div class="flex justify-between mb-4 text-xl font-bold text-slate-800"><span>Total</span><span id="cartTotal">Rp 0</span></div>
-            <button onclick="handleCheckout()" id="btnCheckout" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-xl font-semibold transition disabled:opacity-50" disabled>
-              Bayar Sekarang
-            </button>
-          </div>
-        </div>
-      </div>
+        <!-- PAGE: POS -->
+        <div id="page-pos" class="page hidden fade-in h-full">
+          <div class="flex flex-col md:flex-row h-full">
+            <!-- Produk List -->
+            <div class="flex-1 p-6 overflow-y-auto bg-slate-50">
+              <div class="flex justify-between items-center mb-6 sticky top-0 bg-slate-50 pt-2 pb-4 z-10">
+                <h2 class="text-2xl font-bold text-slate-800">Kasir</h2>
+                <input type="text" id="searchProduct" onkeyup="filterProducts()" placeholder="Cari produk..." class="border border-slate-200 rounded-xl px-4 py-2 w-48 focus:ring-2 focus:ring-slate-800 outline-none">
+              </div>
+              <div id="posProductList" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+            </div>
 
-      <!-- PAGE: PRODUCTS -->
-      <div id="page-products" class="page p-6 hidden fade-in">
-        <h2 class="text-2xl font-bold text-slate-800 mb-6">Manajemen Produk</h2>
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="border-b border-slate-100 bg-slate-50 text-slate-600 text-sm">
-                <th class="p-4">ID</th><th class="p-4">Nama Produk</th><th class="p-4">Kategori</th><th class="p-4">Harga</th><th class="p-4">Stok</th>
-              </tr>
-            </thead>
-            <tbody id="productTableBody" class="divide-y divide-slate-100"></tbody>
-          </table>
+            <!-- Cart -->
+            <div class="w-full md:w-96 bg-white border-l border-slate-200 flex flex-col h-full">
+              <div class="p-6 border-b border-slate-100">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                  <i class="fas fa-shopping-cart text-slate-500"></i> Keranjang <span id="cartCount" class="text-sm bg-slate-800 text-white px-2 py-0.5 rounded-full">0</span>
+                </h3>
+              </div>
+              <div id="cartItems" class="flex-1 p-6 overflow-y-auto space-y-4">
+                <p class="text-center text-slate-400 mt-10">Belum ada item</p>
+              </div>
+              <div class="p-6 border-t border-slate-100 bg-slate-50">
+                <div class="flex justify-between mb-2 text-slate-600"><span>Subtotal</span><span id="cartSubtotal">Rp 0</span></div>
+                <div class="flex justify-between mb-4 text-xl font-bold text-slate-800"><span>Total</span><span id="cartTotal">Rp 0</span></div>
+                <button onclick="handleCheckout()" id="btnCheckout" class="w-full bg-slate-800 hover:bg-slate-900 text-white py-3 rounded-xl font-semibold transition disabled:opacity-50" disabled>
+                  Bayar Sekarang
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAGE: PRODUCTS -->
+        <div id="page-products" class="page p-6 hidden fade-in">
+          <h2 class="text-2xl font-bold text-slate-800 mb-6">Manajemen Produk</h2>
+          <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-slate-100 bg-slate-50 text-slate-600 text-sm">
+                  <th class="p-4">ID</th><th class="p-4">Nama Produk</th><th class="p-4">Kategori</th><th class="p-4">Harga</th><th class="p-4">Stok</th>
+                </tr>
+              </thead>
+              <tbody id="productTableBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
         </div>
       </div>
-      
     </div>
   </div>
 
@@ -188,9 +183,9 @@
         
         if(res.success) {
           currentUser = res.user;
-          document.getElementById('loginScreen').classList.add('hidden');
-          document.getElementById('mainApp').classList.remove('hidden');
-          document.getElementById('mainApp').classList.add('flex');
+          // PERBAIKAN: Menggunakan style display untuk menghindari konflik class Tailwind
+          document.getElementById('loginScreen').style.display = 'none';
+          document.getElementById('mainApp').style.display = 'block';
           initApp();
         } else {
           alert('Username atau password salah!');
@@ -201,21 +196,22 @@
     function handleLogout() {
       currentUser = null;
       cart = [];
-      document.getElementById('mainApp').classList.add('hidden');
-      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('mainApp').style.display = 'none';
+      document.getElementById('loginScreen').style.display = 'flex';
       document.getElementById('username').value = '';
       document.getElementById('password').value = '';
     }
 
     // --- NAVIGATION ---
-    function showPage(pageId) {
+    // PERBAIKAN: Mengirim element 'el' secara langsung agar tidak error
+    function showPage(pageId, el) {
       document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
       document.getElementById(`page-${pageId}`).classList.remove('hidden');
       
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('bg-slate-100', 'text-slate-900'));
-      event.currentTarget.classList.add('bg-slate-100', 'text-slate-900');
+      if(el) el.classList.add('bg-slate-100', 'text-slate-900');
       
-      if(window.innerWidth < 768) toggleSidebar(); // close sidebar on mobile
+      if(window.innerWidth < 768) toggleSidebar();
     }
 
     function toggleSidebar() {
@@ -225,7 +221,10 @@
 
     // --- APP INIT ---
     function initApp() {
-      showPage('dashboard'); // default page
+      // PERBAIKAN: Set class active ke menu pertama saat pertama kali load
+      const firstBtn = document.querySelector('.nav-btn');
+      if(firstBtn) showPage('dashboard', firstBtn);
+
       google.script.run.withSuccessHandler(res => {
         document.getElementById('dashRevenue').innerText = formatCurrency(res.revenue);
         document.getElementById('dashTx').innerText = res.transactions;
@@ -342,7 +341,7 @@
         cart = [];
         renderCart();
         document.getElementById('btnCheckout').innerText = 'Bayar Sekarang';
-        initApp(); // Refresh dashboard data
+        initApp(); 
       }).saveTransaction(payload);
     }
 
@@ -368,7 +367,6 @@
       return 'Rp ' + Number(num).toLocaleString('id-ID');
     }
 
-    // Enter key for login
     document.getElementById('password').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') handleLogin();
     });
