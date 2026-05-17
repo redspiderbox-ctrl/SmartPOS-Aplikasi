@@ -15,12 +15,26 @@
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #f1f1f1; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+    
+    /* KONFIGURASI API URL */
+    :root {
+      --API_URL: "PASTE_URL_WEB_APP_ANDA_DISINI"; 
+    }
   </style>
 </head>
 <body class="overflow-hidden h-screen">
 
   <!-- LOGIN SCREEN -->
-  <div id="loginScreen" class="flex items-center justify-center h-screen bg-gradient-to-br from-slate-900 to-slate-700">
+  <div id="loginScreen" class="flex items-center justify-center h-screen bg-gradient-to-br from-slate-900 to-slate-700 relative">
+    
+    <!-- INFO KONFIGURASI API URL (POJOK KANAN BAWAH) -->
+    <div class="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-xl text-white max-w-xs shadow-xl">
+      <h4 class="font-bold text-sm flex items-center gap-2 mb-2"><i class="fas fa-code"></i> Konfigurasi Developer</h4>
+      <p class="text-xs text-white/80 mb-2">Jika memakai hosting terpisah (GitHub Pages dll), paste Web App URL di:</p>
+      <code class="bg-black/30 text-yellow-300 px-2 py-1 rounded text-[10px] block break-all">&lt;style&gt; :root { --API_URL: "..." } &lt;/style&gt;</code>
+      <p class="text-[10px] text-white/60 mt-2"><i class="fas fa-info-circle"></i> Jika pakai GAS langsung, biarkan kosong.</p>
+    </div>
+
     <div class="bg-white p-8 rounded-2xl shadow-2xl w-96 fade-in">
       <div class="text-center mb-6">
         <div class="bg-slate-800 text-white w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
@@ -46,7 +60,7 @@
     </div>
   </div>
 
-  <!-- MAIN APP (Diperbaiki: tidak ada class hidden dan flex bersamaan) -->
+  <!-- MAIN APP -->
   <div id="mainApp" style="display: none;" class="h-screen">
     <div class="flex h-full">
       <!-- Sidebar -->
@@ -183,7 +197,6 @@
         
         if(res.success) {
           currentUser = res.user;
-          // PERBAIKAN: Menggunakan style display untuk menghindari konflik class Tailwind
           document.getElementById('loginScreen').style.display = 'none';
           document.getElementById('mainApp').style.display = 'block';
           initApp();
@@ -203,7 +216,6 @@
     }
 
     // --- NAVIGATION ---
-    // PERBAIKAN: Mengirim element 'el' secara langsung agar tidak error
     function showPage(pageId, el) {
       document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
       document.getElementById(`page-${pageId}`).classList.remove('hidden');
@@ -221,7 +233,6 @@
 
     // --- APP INIT ---
     function initApp() {
-      // PERBAIKAN: Set class active ke menu pertama saat pertama kali load
       const firstBtn = document.querySelector('.nav-btn');
       if(firstBtn) showPage('dashboard', firstBtn);
 
