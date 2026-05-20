@@ -8,16 +8,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .sidebar-item:hover { background-color: rgba(255,255,255,0.1); }
+        .sidebar-item:hover, .sidebar-item.active { background-color: rgba(255,255,255,0.1); }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
     </style>
 </head>
 <body class="h-full bg-slate-50 text-slate-800">
 
     <script>
-        // PASTE URL Web App dari Google Apps Script di bawah ini:
-        const API_URL = "https://script.google.com/macros/s/AKfycbw4B91nuw5NhDz1tN_PN6ak1cvU12FKxO9P4GbjqjE6VACnxUBvZQ7hvlQr9f_rra0T/exec";
+        const API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+        let cart = [];
+        
+        // Mock data
+        let products = [
+            { name: "Kopi Susu", stock: 10, modalPrice: 8000, price: 15000 },
+            { name: "Roti Bakar", stock: 5, modalPrice: 5000, price: 10000 }
+        ];
     </script>
 
+    <!-- Login Page -->
     <div id="loginPage" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm border border-slate-100">
             <h2 class="text-2xl font-bold mb-6 text-center text-slate-700">Login Kasir</h2>
@@ -30,56 +39,209 @@
         </div>
     </div>
 
+    <!-- Dashboard Main -->
     <div id="dashboardPage" class="hidden h-screen flex">
-        <!-- Sidebar -->
         <aside class="w-64 bg-slate-900 text-white p-6 hidden md:block">
             <h1 class="text-xl font-bold mb-10">POS System</h1>
-            <nav class="space-y-4">
-                <div class="sidebar-item p-3 rounded-lg cursor-pointer flex items-center gap-3"><span>Dashboard</span></div>
-                <div class="sidebar-item p-3 rounded-lg cursor-pointer flex items-center gap-3"><span>Penjualan</span></div>
-                <div class="sidebar-item p-3 rounded-lg cursor-pointer flex items-center gap-3"><span>Produk</span></div>
-                <div class="sidebar-item p-3 rounded-lg cursor-pointer flex items-center gap-3" onclick="location.reload()"><span>Logout</span></div>
+            <nav class="space-y-2">
+                <div onclick="switchMenu('dashboard')" class="sidebar-item active p-3 rounded-lg cursor-pointer flex items-center gap-3">Dashboard</div>
+                <div onclick="switchMenu('penjualan')" class="sidebar-item p-3 rounded-lg cursor-pointer flex items-center gap-3">Penjualan</div>
+                <div onclick="switchMenu('produk')" class="sidebar-item p-3 rounded-lg cursor-pointer flex items-center gap-3">Produk</div>
+                <div onclick="location.reload()" class="sidebar-item p-3 rounded-lg cursor-pointer flex items-center gap-3 text-red-400">Logout</div>
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-8">
-            <header class="mb-8">
-                <h2 class="text-3xl font-bold text-slate-800">Dashboard</h2>
-                <p class="text-slate-500">Selamat datang kembali, admin.</p>
-            </header>
+            <section id="dashboard" class="content-section active">
+                <h2 class="text-3xl font-bold mb-8">Dashboard</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-slate-500 text-sm">Total Penjualan</p>
+                        <h3 class="text-2xl font-bold text-blue-600">Rp 1.250.000</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-slate-500 text-sm">Jumlah Transaksi</p>
+                        <h3 class="text-2xl font-bold text-slate-700">12 Order</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-slate-500 text-sm">Stok Rendah</p>
+                        <h3 class="text-2xl font-bold text-amber-500">3 Item</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-slate-500 text-sm">Total Nilai Modal</p>
+                        <h3 id="totalModal" class="text-2xl font-bold text-emerald-600">Rp 0</h3>
+                    </div>
+                </div>
+            </section>
 
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <p class="text-slate-500 text-sm">Total Penjualan</p>
-                    <h3 class="text-2xl font-bold text-blue-600">Rp 1.250.000</h3>
+            <section id="penjualan" class="content-section">
+                <h2 class="text-3xl font-bold mb-8">Kasir</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="bg-white p-4 rounded-xl shadow-sm border">
+                            <input type="text" placeholder="Cari produk..." class="w-full p-2 border rounded-lg">
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-xl border cursor-pointer hover:border-blue-500">
+                                <p class="font-semibold">Kopi Susu</p>
+                                <p class="text-sm text-slate-500">Rp 15.000</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <h3 class="font-bold mb-4">Keranjang</h3>
+                        <div id="cartItems" class="space-y-3 mb-4">
+                            <p class="text-sm text-slate-400">Keranjang kosong</p>
+                        </div>
+                        <button class="w-full bg-green-600 text-white p-3 rounded-lg font-bold">Bayar</button>
+                    </div>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <p class="text-slate-500 text-sm">Jumlah Transaksi</p>
-                    <h3 class="text-2xl font-bold text-slate-700">12 Order</h3>
+            </section>
+
+            <section id="produk" class="content-section">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-3xl font-bold">Daftar Produk</h2>
+                    <button onclick="openModal('add')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition">Tambah Produk</button>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                    <p class="text-slate-500 text-sm">Stok Rendah</p>
-                    <h3 class="text-2xl font-bold text-amber-500">3 Item</h3>
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 border-b">
+                            <tr>
+                                <th class="p-4">Nama Produk</th>
+                                <th class="p-4">Stok</th>
+                                <th class="p-4">Harga Modal</th>
+                                <th class="p-4">Harga Jual</th>
+                                <th class="p-4">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody">
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+            </section>
         </main>
     </div>
 
+    <!-- Product Modal -->
+    <div id="productModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-2xl w-full max-w-md">
+            <h3 id="modalTitle" class="text-xl font-bold mb-6">Tambah Produk</h3>
+            <input type="hidden" id="editIndex">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Nama Produk</label>
+                    <input type="text" id="prodName" placeholder="Contoh: Kopi Susu" class="w-full p-3 rounded-lg border">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Stok</label>
+                    <input type="number" id="prodStock" placeholder="0" class="w-full p-3 rounded-lg border">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Harga Modal</label>
+                    <input type="number" id="prodModalPrice" placeholder="0" class="w-full p-3 rounded-lg border">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-600 mb-1">Harga Jual</label>
+                    <input type="number" id="prodPrice" placeholder="0" class="w-full p-3 rounded-lg border">
+                </div>
+                <div class="flex gap-4 mt-6">
+                    <button onclick="closeModal()" class="flex-1 bg-slate-200 p-3 rounded-lg font-semibold hover:bg-slate-300 transition">Batal</button>
+                    <button onclick="saveProduct()" class="flex-1 bg-blue-600 text-white p-3 rounded-lg font-semibold hover:bg-blue-700 transition">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function renderProducts() {
+            const tbody = document.getElementById('productTableBody');
+            tbody.innerHTML = products.map((p, index) => `
+                <tr>
+                    <td class="p-4 border-b">${p.name}</td>
+                    <td class="p-4 border-b">${p.stock}</td>
+                    <td class="p-4 border-b">Rp ${p.modalPrice.toLocaleString()}</td>
+                    <td class="p-4 border-b">Rp ${p.price.toLocaleString()}</td>
+                    <td class="p-4 border-b">
+                        <button onclick="openModal('edit', ${index})" class="text-blue-600 hover:underline">Edit</button>
+                    </td>
+                </tr>
+            `).join('');
+            calculateDashboard();
+        }
+
+        function openModal(mode, index = null) {
+            document.getElementById('productModal').classList.remove('hidden');
+            if (mode === 'edit') {
+                const p = products[index];
+                document.getElementById('modalTitle').innerText = 'Edit Produk';
+                document.getElementById('editIndex').value = index;
+                document.getElementById('prodName').value = p.name;
+                document.getElementById('prodStock').value = p.stock;
+                document.getElementById('prodModalPrice').value = p.modalPrice;
+                document.getElementById('prodPrice').value = p.price;
+            } else {
+                document.getElementById('modalTitle').innerText = 'Tambah Produk';
+                document.getElementById('editIndex').value = '';
+                document.getElementById('prodName').value = '';
+                document.getElementById('prodStock').value = '';
+                document.getElementById('prodModalPrice').value = '';
+                document.getElementById('prodPrice').value = '';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        function saveProduct() {
+            const index = document.getElementById('editIndex').value;
+            const newProduct = {
+                name: document.getElementById('prodName').value,
+                stock: parseInt(document.getElementById('prodStock').value) || 0,
+                modalPrice: parseInt(document.getElementById('prodModalPrice').value) || 0,
+                price: parseInt(document.getElementById('prodPrice').value) || 0
+            };
+
+            if (index === '') {
+                products.push(newProduct);
+            } else {
+                products[index] = newProduct;
+            }
+            renderProducts();
+            closeModal();
+        }
+
+        function calculateDashboard() {
+            const totalModal = products.reduce((acc, p) => acc + (p.stock * p.modalPrice), 0);
+            document.getElementById('totalModal').innerText = 
+                new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(totalModal);
+        }
+
         function handleLogin() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            const error = document.getElementById('loginError');
-
             if (user === 'admin' && pass === 'admin') {
                 document.getElementById('loginPage').classList.add('hidden');
                 document.getElementById('dashboardPage').classList.remove('hidden');
             } else {
-                error.classList.remove('hidden');
+                document.getElementById('loginError').classList.remove('hidden');
             }
         }
+
+        function switchMenu(menuId) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(menuId).classList.add('active');
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.innerText.toLowerCase().includes(menuId)) item.classList.add('active');
+            });
+        }
+
+        window.onload = () => {
+            renderProducts();
+            calculateDashboard();
+        };
     </script>
 </body>
 </html>
