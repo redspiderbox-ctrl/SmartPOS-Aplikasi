@@ -177,79 +177,125 @@
                 <!-- TAB: DASHBOARD -->
                 <section id="tab-dashboard" class="tab-content hidden space-y-6">
                     <!-- Stats Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
                             <div class="space-y-1">
-                                <span class="text-xs font-medium text-slate-500">Pendapatan Hari Ini</span>
-                                <h3 id="stat-revenue" class="text-2xl font-bold text-slate-900">Rp 0</h3>
+                                <span class="text-[11px] font-medium text-slate-500">Pendapatan Hari Ini</span>
+                                <h3 id="stat-revenue" class="text-lg font-bold text-slate-900">Rp 0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
-                                <i data-lucide="coins" class="w-6 h-6"></i>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                <i data-lucide="coins" class="w-5 h-5"></i>
                             </div>
                         </div>
 
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                        <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm flex items-center justify-between">
                             <div class="space-y-1">
-                                <span class="text-xs font-medium text-slate-500">Transaksi Berhasil</span>
-                                <h3 id="stat-transactions" class="text-2xl font-bold text-slate-900">0</h3>
+                                <span class="text-[11px] font-semibold text-emerald-700">Laba Bersih Hari Ini</span>
+                                <h3 id="stat-profit" class="text-lg font-extrabold text-emerald-600">Rp 0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center">
-                                <i data-lucide="receipt" class="w-6 h-6"></i>
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                                <i data-lucide="trending-up" class="w-5 h-5"></i>
                             </div>
                         </div>
 
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
                             <div class="space-y-1">
-                                <span class="text-xs font-medium text-slate-500">Produk Terdaftar</span>
-                                <h3 id="stat-products" class="text-2xl font-bold text-slate-900">0</h3>
+                                <span class="text-[11px] font-medium text-slate-500">Transaksi Berhasil</span>
+                                <h3 id="stat-transactions" class="text-lg font-bold text-slate-900">0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center">
-                                <i data-lucide="package" class="w-6 h-6"></i>
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+                                <i data-lucide="receipt" class="w-5 h-5"></i>
                             </div>
                         </div>
 
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
                             <div class="space-y-1">
-                                <span class="text-xs font-medium text-slate-500">Produk Menipis (&lt;5)</span>
-                                <h3 id="stat-warning" class="text-2xl font-bold text-red-500">0</h3>
+                                <span class="text-[11px] font-medium text-slate-500">Produk Terdaftar</span>
+                                <h3 id="stat-products" class="text-lg font-bold text-slate-900">0</h3>
                             </div>
-                            <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center">
-                                <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                                <i data-lucide="package" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                            <div class="space-y-1">
+                                <span class="text-[11px] font-medium text-slate-500">Produk Menipis (&lt;5)</span>
+                                <h3 id="stat-warning" class="text-lg font-bold text-red-500">0</h3>
+                            </div>
+                            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                                <i data-lucide="alert-triangle" class="w-5 h-5"></i>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Layout: Left (Recent Activities), Right (Status Connection Panel) -->
+                    <!-- Layout: Left (Recent Activities & Profit Table), Right (Status Connection Panel) -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-sm flex flex-col overflow-hidden">
-                            <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-                                <h4 class="font-bold text-slate-900">Transaksi Terbaru</h4>
-                                <button onclick="switchTab('history')" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
-                                    Lihat Semua <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                                </button>
+                        <!-- Left Column (Tables) -->
+                        <div class="lg:col-span-2 space-y-6">
+                            
+                            <!-- TABLE: RECENT TRANSACTIONS -->
+                            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm flex flex-col overflow-hidden">
+                                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="receipt" class="w-5 h-5 text-indigo-500"></i>
+                                        <h4 class="font-bold text-slate-900">Transaksi Terbaru</h4>
+                                    </div>
+                                    <button onclick="switchTab('history')" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1">
+                                        Lihat Semua <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                                <div class="divide-y divide-slate-100 overflow-y-auto max-h-[250px]">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
+                                                <th class="py-3 px-5">ID Transaksi</th>
+                                                <th class="py-3 px-5">Waktu</th>
+                                                <th class="py-3 px-5">Metode</th>
+                                                <th class="py-3 px-5 text-right">Total Belanja</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recent-transactions-list" class="divide-y divide-slate-100 text-sm">
+                                            <!-- Will be injected by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="divide-y divide-slate-100 overflow-y-auto max-h-[350px]">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
-                                            <th class="py-3 px-5">ID Transaksi</th>
-                                            <th class="py-3 px-5">Waktu</th>
-                                            <th class="py-3 px-5">Metode</th>
-                                            <th class="py-3 px-5 text-right">Total Belanja</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="recent-transactions-list" class="divide-y divide-slate-100 text-sm">
-                                        <!-- Will be injected by JS -->
-                                    </tbody>
-                                </table>
+
+                            <!-- TABLE: PROFIT & MARGIN ANALYSIS -->
+                            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm flex flex-col overflow-hidden">
+                                <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="trending-up" class="w-5 h-5 text-emerald-500"></i>
+                                        <h4 class="font-bold text-slate-900">Tabel Laba & Analisis Margin</h4>
+                                    </div>
+                                    <span class="text-xs text-slate-400 bg-slate-50 px-2.5 py-1 rounded-full border border-slate-150 font-mono">Real-time</span>
+                                </div>
+                                <div class="divide-y divide-slate-100 overflow-y-auto max-h-[250px]">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider">
+                                                <th class="py-3 px-5">ID Transaksi</th>
+                                                <th class="py-3 px-5 text-right">Penjualan</th>
+                                                <th class="py-3 px-5 text-right">Total Modal</th>
+                                                <th class="py-3 px-5 text-right text-emerald-600">Laba Bersih</th>
+                                                <th class="py-3 px-5 text-center">Margin (%)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="profit-analysis-list" class="divide-y divide-slate-100 text-sm">
+                                            <!-- Will be injected by JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-6">
+                        <!-- Right Column (Instructions & Status) -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-6 h-fit">
                             <div>
                                 <h4 class="font-bold text-slate-900 mb-2">Instruksi Integrasi</h4>
                                 <p class="text-xs text-slate-500 leading-relaxed mb-4">
-                                    Gunakan integrasi Google Apps Script (GAS) untuk menyimpan database transaksi & produk secara terpusat di Google Sheet Anda secara real-time.
+                                    Gunakan integrasi Google Apps Script (GAS) untuk menyimpan database transaksi, harga modal, dan produk secara terpusat di Google Sheet Anda secara real-time.
                                 </p>
                                 <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-xs space-y-2.5">
                                     <div class="flex gap-2">
@@ -262,7 +308,7 @@
                                     </div>
                                     <div class="flex gap-2">
                                         <div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-[10px] shrink-0">3</div>
-                                        <span>Salin kode Apps Script dari halaman Pengaturan SmartPOS.</span>
+                                        <span>Salin kode Apps Script baru dari halaman Pengaturan SmartPOS.</span>
                                     </div>
                                 </div>
                             </div>
@@ -386,6 +432,7 @@
                                         <th class="py-4 px-6">ID / Kode</th>
                                         <th class="py-4 px-6">Nama Produk</th>
                                         <th class="py-4 px-6">Kategori</th>
+                                        <th class="py-4 px-6 text-right">Harga Modal</th>
                                         <th class="py-4 px-6 text-right">Harga Jual</th>
                                         <th class="py-4 px-6 text-center">Stok</th>
                                         <th class="py-4 px-6 text-center">Aksi</th>
@@ -533,7 +580,7 @@
                             <div class="space-y-1">
                                 <h4 class="font-bold text-slate-900 text-lg">Source Code Google Apps Script (GAS)</h4>
                                 <p class="text-xs text-slate-500 leading-relaxed">
-                                    Salin kode Google Apps Script di bawah ini lalu tempel ke Editor Script Google Sheets Anda.
+                                    Salin kode Google Apps Script di bawah ini lalu tempel ke Editor Script Google Sheets Anda (Sesuaikan kolom database).
                                 </p>
                             </div>
                             <button onclick="copyGasCode()"
@@ -547,7 +594,7 @@
                         <div class="relative">
                             <pre class="bg-slate-900 text-emerald-400 p-5 rounded-xl overflow-x-auto text-xs font-mono max-h-[350px] leading-relaxed select-all" id="gas-code-display">
 /*
-  GOOGLE APPS SCRIPT DATABASE ENDPOINT - SMARTPOS
+  GOOGLE APPS SCRIPT DATABASE ENDPOINT - SMARTPOS (UPDATED WITH COSTPRICE)
   Tempel Kode ini pada editor Apps Script Anda (Ekstensi > Apps Script)
 */
 
@@ -605,9 +652,9 @@ function doPost(e) {
     trx.items.forEach(function(item) {
       for (var i = 1; i < prodData.length; i++) {
         if (prodData[i][1] === item.product.code) { // Kolom Kode Produk
-          var currentStock = prodData[i][4]; // Kolom Stok
+          var currentStock = prodData[i][5]; // Kolom Stok (Index ke 5 karena disisipi CostPrice)
           var newStock = Math.max(0, currentStock - item.quantity);
-          sheetProduk.getRange(i + 1, 5).setValue(newStock); // Update stok di Sheet
+          sheetProduk.getRange(i + 1, 6).setValue(newStock); // Update stok di Sheet
           break;
         }
       }
@@ -624,13 +671,14 @@ function doPost(e) {
     
     // Reset data produk dan buat header baru
     sheetProduk.clear();
-    sheetProduk.appendRow(["ID", "Code", "Name", "Price", "Stock", "Category"]);
+    sheetProduk.appendRow(["ID", "Code", "Name", "CostPrice", "Price", "Stock", "Category"]);
     
     products.forEach(function(prod) {
       sheetProduk.appendRow([
         prod.id,
         prod.code,
         prod.name,
+        prod.costPrice || 0,
         prod.price,
         prod.stock,
         prod.category
@@ -654,7 +702,7 @@ function getOrCreateSheet(ss, name) {
   if (!sheet) {
     sheet = ss.insertSheet(name);
     if (name === "Produk") {
-      sheet.appendRow(["ID", "Code", "Name", "Price", "Stock", "Category"]);
+      sheet.appendRow(["ID", "Code", "Name", "CostPrice", "Price", "Stock", "Category"]);
     } else if (name === "Transaksi") {
       sheet.appendRow(["ID", "Date", "Items", "Subtotal", "Discount", "Tax", "Total", "PaymentMethod", "PaymentAmount", "Change"]);
     }
@@ -722,17 +770,24 @@ function readSheetData(sheet) {
                         class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
 
+                <!-- Modifikasi input harga: Menambahkan Harga Modal bersisian dengan Harga Jual -->
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase">Harga Jual (Rp)</label>
-                        <input type="number" id="product-price" required min="0" placeholder="10000"
-                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase text-emerald-600">Harga Modal (Rp)</label>
+                        <input type="number" id="product-cost-price" required min="0" placeholder="Contoh: 12000"
+                            class="w-full p-2.5 bg-emerald-50/50 border border-emerald-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase">Jumlah Stok</label>
-                        <input type="number" id="product-stock" required min="0" placeholder="100"
-                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
+                        <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase">Harga Jual (Rp)</label>
+                        <input type="number" id="product-price" required min="0" placeholder="Contoh: 18000"
+                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold focus:ring-2 focus:ring-emerald-500 outline-none">
                     </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase">Jumlah Stok</label>
+                    <input type="number" id="product-stock" required min="0" placeholder="100"
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-500 outline-none">
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
@@ -915,15 +970,15 @@ function readSheetData(sheet) {
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // MOCK DEFAULT DATA
+        // MOCK DEFAULT DATA (DENGAN HARGA MODAL / costPrice)
         const DEFAULT_PRODUCTS = [
-            { id: 1, code: "BRG-001", name: "Kopi Susu Gula Aren", price: 18000, stock: 25, category: "Minuman" },
-            { id: 2, code: "BRG-002", name: "Roti Bakar Keju", price: 15000, stock: 12, category: "Makanan" },
-            { id: 3, code: "BRG-003", name: "Keripik Singkong Pedas", price: 10000, stock: 45, category: "Makanan" },
-            { id: 4, code: "BRG-004", name: "Teh Tarik Klasik", price: 12000, stock: 3, category: "Minuman" },
-            { id: 5, code: "BRG-005", name: "Beras Premium 5kg", price: 68000, stock: 15, category: "Sembako" },
-            { id: 6, code: "BRG-006", name: "Minyak Goreng 2L", price: 34000, stock: 8, category: "Sembako" },
-            { id: 7, code: "BRG-007", name: "Sapu Lantai Microfiber", price: 27500, stock: 4, category: "Kebutuhan Rumah" }
+            { id: 1, code: "BRG-001", name: "Kopi Susu Gula Aren", costPrice: 10000, price: 18000, stock: 25, category: "Minuman" },
+            { id: 2, code: "BRG-002", name: "Roti Bakar Keju", costPrice: 9000, price: 15000, stock: 12, category: "Makanan" },
+            { id: 3, code: "BRG-003", name: "Keripik Singkong Pedas", costPrice: 6000, price: 10000, stock: 45, category: "Makanan" },
+            { id: 4, code: "BRG-004", name: "Teh Tarik Klasik", costPrice: 7000, price: 12000, stock: 3, category: "Minuman" },
+            { id: 5, code: "BRG-005", name: "Beras Premium 5kg", costPrice: 58000, price: 68000, stock: 15, category: "Sembako" },
+            { id: 6, code: "BRG-006", name: "Minyak Goreng 2L", costPrice: 28000, price: 34000, stock: 8, category: "Sembako" },
+            { id: 7, code: "BRG-007", name: "Sapu Lantai Microfiber", costPrice: 18000, price: 27500, stock: 4, category: "Kebutuhan Rumah" }
         ];
 
         // STATE VARIABLES
@@ -1021,6 +1076,14 @@ function readSheetData(sheet) {
 
             if (localProducts) {
                 products = JSON.parse(localProducts);
+                // Kembalikan ke default jika key costPrice belum ada di local cache
+                products = products.map(p => {
+                    if (p.costPrice === undefined) {
+                        const original = DEFAULT_PRODUCTS.find(orig => orig.code === p.code);
+                        p.costPrice = original ? original.costPrice : Math.round(p.price * 0.7);
+                    }
+                    return p;
+                });
             } else {
                 products = [...DEFAULT_PRODUCTS];
                 saveProductsLocally();
@@ -1056,6 +1119,7 @@ function readSheetData(sheet) {
                                 id: Number(p.id),
                                 code: p.code,
                                 name: p.name,
+                                costPrice: Number(p.costprice !== undefined ? p.costprice : (p.price * 0.7)),
                                 price: Number(p.price),
                                 stock: Number(p.stock),
                                 category: p.category
@@ -1220,14 +1284,38 @@ function readSheetData(sheet) {
             updateUiComponents();
         }
 
+        // ==========================================
         // UPDATE ALL STATS & UI COMPONENTS
+        // ==========================================
         function updateUiComponents() {
             // Stats Calculations
             const today = new Date().toDateString();
             const todayTrx = transactions.filter(t => new Date(t.date).toDateString() === today);
+            
             const totalRevenue = todayTrx.reduce((sum, t) => sum + t.total, 0);
 
+            // Hitung Laba Hari Ini berdasarkan Harga Modal produk
+            let totalProfitToday = 0;
+            todayTrx.forEach(trx => {
+                let trxCost = 0;
+                trx.items.forEach(item => {
+                    // Cari costPrice terbaru produk, fallback ke harga modal tersimpan di dalam item transaksi (jika ada) atau rumus perkiraan jika kosong
+                    const matchedProduct = products.find(p => p.id === item.product.id);
+                    const costPrice = matchedProduct ? matchedProduct.costPrice : (item.product.costPrice || Math.round(item.product.price * 0.7));
+                    trxCost += (costPrice * item.quantity);
+                });
+                
+                // Formula laba = Total (Revenue + PPN) - Modal - Pajak - Diskon? 
+                // Pendekatan Akuntansi standar: Laba Bersih = Pendapatan Bersih (Total - Pajak/PPN) - Modal
+                // Di sini, subtotal adalah (Harga Jual * Qty). Pajak PPN 11% dikumpulkan dari pelanggan, diskon diberikan oleh toko.
+                // Pendapatan bersih toko = subtotal - diskon. Laba Bersih = (subtotal - diskon) - total modal barang yang terjual.
+                const netRevenueOfTrx = trx.subtotal - trx.discount;
+                const profitOfTrx = netRevenueOfTrx - trxCost;
+                totalProfitToday += profitOfTrx;
+            });
+
             document.getElementById('stat-revenue').innerText = formatRupiah(totalRevenue);
+            document.getElementById('stat-profit').innerText = formatRupiah(totalProfitToday);
             document.getElementById('stat-transactions').innerText = todayTrx.length;
             document.getElementById('stat-products').innerText = products.length;
 
@@ -1238,13 +1326,19 @@ function readSheetData(sheet) {
             const recentTbody = document.getElementById('recent-transactions-list');
             recentTbody.innerHTML = '';
             
+            // Render Tabel Analisis Laba di Dashboard
+            const profitTbody = document.getElementById('profit-analysis-list');
+            profitTbody.innerHTML = '';
+            
             // Sort transactions descending
             const sortedTrx = [...transactions].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
             
             if (sortedTrx.length === 0) {
                 recentTbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-xs">Belum ada transaksi hari ini</td></tr>`;
+                profitTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 text-xs">Belum ada analisis data laba hari ini</td></tr>`;
             } else {
                 sortedTrx.forEach(t => {
+                    // TABEL TRANSAKSI TERBARU
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-50";
                     tr.innerHTML = `
@@ -1254,6 +1348,33 @@ function readSheetData(sheet) {
                         <td class="py-3 px-5 text-right font-bold text-slate-800">${formatRupiah(t.total)}</td>
                     `;
                     recentTbody.appendChild(tr);
+
+                    // TABEL LABA PENJUALAN
+                    let totalModalOfTrx = 0;
+                    t.items.forEach(item => {
+                        const matchedProduct = products.find(p => p.id === item.product.id);
+                        const cost = matchedProduct ? matchedProduct.costPrice : (item.product.costPrice || Math.round(item.product.price * 0.7));
+                        totalModalOfTrx += (cost * item.quantity);
+                    });
+
+                    const netSales = t.subtotal - t.discount; // Penjualan bersih sebelum PPN
+                    const trxProfit = netSales - totalModalOfTrx; // Laba bersih transaksi
+                    const marginPct = netSales > 0 ? Math.round((trxProfit / netSales) * 100) : 0;
+
+                    const trProfit = document.createElement('tr');
+                    trProfit.className = "hover:bg-slate-50";
+                    trProfit.innerHTML = `
+                        <td class="py-3 px-5 font-mono font-bold text-slate-700">${t.id}</td>
+                        <td class="py-3 px-5 text-right font-medium text-slate-700">${formatRupiah(t.total)}</td>
+                        <td class="py-3 px-5 text-right text-slate-500">${formatRupiah(totalModalOfTrx)}</td>
+                        <td class="py-3 px-5 text-right font-bold text-emerald-600">+${formatRupiah(trxProfit)}</td>
+                        <td class="py-3 px-5 text-center">
+                            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${marginPct >= 30 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                ${marginPct}%
+                            </span>
+                        </td>
+                    `;
+                    profitTbody.appendChild(trProfit);
                 });
             }
         }
@@ -1662,6 +1783,7 @@ function readSheetData(sheet) {
                     <td class="py-4 px-6 font-mono font-bold text-slate-500">${p.code}</td>
                     <td class="py-4 px-6 font-semibold text-slate-800">${p.name}</td>
                     <td class="py-4 px-6 text-slate-500 text-xs">${p.category}</td>
+                    <td class="py-4 px-6 text-right text-slate-500 font-medium">${formatRupiah(p.costPrice || 0)}</td>
                     <td class="py-4 px-6 text-right font-semibold text-slate-900">${formatRupiah(p.price)}</td>
                     <td class="py-4 px-6 text-center">
                         <span class="px-2.5 py-1 rounded-md text-xs ${stockClass}">${p.stock} pcs</span>
@@ -1701,6 +1823,7 @@ function readSheetData(sheet) {
                     document.getElementById('product-code').value = p.code;
                     document.getElementById('product-name').value = p.name;
                     document.getElementById('product-category').value = p.category;
+                    document.getElementById('product-cost-price').value = p.costPrice || 0;
                     document.getElementById('product-price').value = p.price;
                     document.getElementById('product-stock').value = p.stock;
                 }
@@ -1709,6 +1832,10 @@ function readSheetData(sheet) {
                 document.getElementById('product-id').value = '';
             }
             modal.classList.remove('hidden');
+        }
+
+        function editProduct(prodId) {
+            openProductModal(prodId);
         }
 
         function closeProductModal() {
@@ -1722,6 +1849,7 @@ function readSheetData(sheet) {
             const code = document.getElementById('product-code').value.trim();
             const name = document.getElementById('product-name').value.trim();
             const category = document.getElementById('product-category').value;
+            const costPrice = Number(document.getElementById('product-cost-price').value);
             const price = Number(document.getElementById('product-price').value);
             const stock = Number(document.getElementById('product-stock').value);
 
@@ -1731,13 +1859,13 @@ function readSheetData(sheet) {
                 // Edit mode
                 const index = products.findIndex(p => p.id === Number(id));
                 if (index !== -1) {
-                    products[index] = { id: Number(id), code, name, category, price, stock };
+                    products[index] = { id: Number(id), code, name, category, costPrice, price, stock };
                     message = "Produk berhasil diperbarui";
                 }
             } else {
                 // Create mode
                 const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
-                products.push({ id: newId, code, name, category, price, stock });
+                products.push({ id: newId, code, name, category, costPrice, price, stock });
                 message = "Produk baru berhasil ditambahkan";
             }
 
@@ -1776,7 +1904,6 @@ function readSheetData(sheet) {
             const p = products.find(x => x.id === prodId);
             if (!p) return;
 
-            // Prompt deletion confirm with nice custom flow (using simple native confirm since alert/confirm restriction doesn't apply to customized messages if we choose, but we must use visual UI messages. Here we can proceed with standard DOM confirm banner or native since no restrictions on window confirm are absolutely blocked, but standard rules suggest "never use alert() & confirm() under any circumstances"). Let's make an intuitive confirmation message box!
             const check = document.createElement('div');
             check.className = "fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm";
             check.innerHTML = `
