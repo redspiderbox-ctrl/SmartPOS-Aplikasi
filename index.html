@@ -32,12 +32,29 @@
                 <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">SmartPOS</h2>
                 <p class="text-slate-500 mt-2 text-sm">Aplikasi Kasir KIOS Modern </p>
             </div>
-            <form id="login-form" class="space-y-5">
-                <div><label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">Username</label><div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i data-lucide="user" class="w-5 h-5"></i></span><input id="login-username" type="text" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="Masukkan username"></div></div>
-                <div><div class="flex justify-between items-center mb-2"><label class="text-xs font-semibold uppercase tracking-wider text-slate-600">Password</label></div><div class="relative"><span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i data-lucide="lock" class="w-5 h-5"></i></span><input id="login-password" type="password" required class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="••••••••"></div></div>
+            <form id="login-form" class="space-y-5" autocomplete="off">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-2">Username</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i data-lucide="user" class="w-5 h-5"></i></span>
+                        <input id="login-username" type="text" required autocomplete="off" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm" placeholder="Masukkan username">
+                    </div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-slate-600">Password</label>
+                    </div>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400"><i data-lucide="lock" class="w-5 h-5"></i></span>
+                        <input id="login-password" type="password" required autocomplete="new-password" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm" placeholder="••••••••">
+                    </div>
+                </div>
                 <div id="login-error" class="hidden text-sm text-red-600 bg-red-50 p-3 rounded-lg flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i><span>Username atau Password salah!</span></div>
                 <button type="submit" class="w-full py-3 px-4 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-medium rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm cursor-pointer">Masuk ke Sistem <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
             </form>
+            <div class="mt-8 pt-6 border-t border-slate-100 text-center">
+                <span class="text-xs text-slate-400 bg-slate-100 px-3 py-1 rounded-full font-mono">Masukan Username dan Password</span>
+            </div>
         </div>
     </div>
 
@@ -65,8 +82,6 @@
             <div class="flex-1 overflow-y-auto p-6 space-y-6">
                 <!-- TAB: DASHBOARD -->
                 <section id="tab-dashboard" class="tab-content hidden space-y-6">
-                    
-                    <!-- PERIOD FILTER -->
                     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
                         <div class="flex flex-wrap gap-2" id="period-filters">
                             <button onclick="setPeriod('today')" class="period-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-emerald-600 text-white shadow-sm">Hari Ini</button>
@@ -82,51 +97,24 @@
                             <button onclick="applyCustomDate()" class="p-1.5 px-3 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-semibold transition-all">Cek</button>
                         </div>
                     </div>
-
-                    <!-- Stats Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                            <div class="space-y-1"><span id="stat-revenue-label" class="text-[11px] font-medium text-slate-500">Pendapatan (Hari Ini)</span><h3 id="stat-revenue" class="text-lg font-bold text-slate-900">Rp 0</h3></div>
-                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0"><i data-lucide="coins" class="w-5 h-5"></i></div>
-                        </div>
-                        <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm flex items-center justify-between">
-                            <div class="space-y-1"><span id="stat-profit-label" class="text-[11px] font-semibold text-emerald-700">Laba Bersih (Hari Ini)</span><h3 id="stat-profit" class="text-lg font-extrabold text-emerald-600">Rp 0</h3></div>
-                            <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                            <div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Total Modal (Kini)</span><h3 id="stat-initial-capital" class="text-lg font-bold text-indigo-600">Rp 0</h3></div>
-                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0"><i data-lucide="landmark" class="w-5 h-5"></i></div>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                            <div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Sisa Modal (Gudang)</span><h3 id="stat-remaining-capital" class="text-lg font-bold text-amber-600">Rp 0</h3></div>
-                            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0"><i data-lucide="warehouse" class="w-5 h-5"></i></div>
-                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between"><div class="space-y-1"><span id="stat-revenue-label" class="text-[11px] font-medium text-slate-500">Pendapatan (Hari Ini)</span><h3 id="stat-revenue" class="text-lg font-bold text-slate-900">Rp 0</h3></div><div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0"><i data-lucide="coins" class="w-5 h-5"></i></div></div>
+                        <div class="bg-gradient-to-br from-emerald-50 to-teal-50/50 p-4 rounded-2xl border border-emerald-100 shadow-sm flex items-center justify-between"><div class="space-y-1"><span id="stat-profit-label" class="text-[11px] font-semibold text-emerald-700">Laba Bersih (Hari Ini)</span><h3 id="stat-profit" class="text-lg font-extrabold text-emerald-600">Rp 0</h3></div><div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm"><i data-lucide="trending-up" class="w-5 h-5"></i></div></div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between"><div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Total Modal (Kini)</span><h3 id="stat-initial-capital" class="text-lg font-bold text-indigo-600">Rp 0</h3></div><div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0"><i data-lucide="landmark" class="w-5 h-5"></i></div></div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between"><div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Sisa Modal (Gudang)</span><h3 id="stat-remaining-capital" class="text-lg font-bold text-amber-600">Rp 0</h3></div><div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0"><i data-lucide="warehouse" class="w-5 h-5"></i></div></div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                            <div class="space-y-1"><span id="stat-transactions-label" class="text-[11px] font-medium text-slate-500">Transaksi (Hari Ini)</span><h3 id="stat-transactions" class="text-lg font-bold text-slate-900">0</h3></div>
-                            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i data-lucide="receipt" class="w-5 h-5"></i></div>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                            <div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Produk Terdaftar</span><h3 id="stat-products" class="text-lg font-bold text-slate-900">0</h3></div>
-                            <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center shrink-0"><i data-lucide="package" class="w-5 h-5"></i></div>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                            <div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Produk Menipis (&lt;5)</span><h3 id="stat-warning" class="text-lg font-bold text-red-500">0</h3></div>
-                            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
-                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between"><div class="space-y-1"><span id="stat-transactions-label" class="text-[11px] font-medium text-slate-500">Transaksi (Hari Ini)</span><h3 id="stat-transactions" class="text-lg font-bold text-slate-900">0</h3></div><div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center shrink-0"><i data-lucide="receipt" class="w-5 h-5"></i></div></div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between"><div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Produk Terdaftar</span><h3 id="stat-products" class="text-lg font-bold text-slate-900">0</h3></div><div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center shrink-0"><i data-lucide="package" class="w-5 h-5"></i></div></div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between"><div class="space-y-1"><span class="text-[11px] font-medium text-slate-500">Produk Menipis (&lt;5)</span><h3 id="stat-warning" class="text-lg font-bold text-red-500">0</h3></div><div class="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center shrink-0"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div></div>
                     </div>
-
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <div class="lg:col-span-2 space-y-6">
                             <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm flex flex-col overflow-hidden"><div class="p-5 border-b border-slate-100 flex items-center justify-between"><div class="flex items-center gap-2"><i data-lucide="landmark" class="w-5 h-5 text-indigo-500"></i><h4 class="font-bold text-slate-900">Pantau Nilai Modal & Aset</h4></div><span class="text-[10px] font-bold px-2 py-1 rounded bg-indigo-50 text-indigo-600">STOK KINI</span></div><div class="overflow-x-auto"><table class="w-full text-left border-collapse"><thead><tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider"><th class="py-3 px-5">Kategori</th><th class="py-3 px-5 text-center">Item</th><th class="py-3 px-5 text-right">Stok</th><th class="py-3 px-5 text-right">Nilai Modal</th></tr></thead><tbody id="capital-category-list" class="divide-y divide-slate-100 text-sm"></tbody><tfoot id="capital-category-footer" class="bg-slate-50 font-bold text-xs text-slate-700 border-t-2 border-slate-200"></tfoot></table></div></div>
                             <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm flex flex-col overflow-hidden"><div class="p-5 border-b border-slate-100 flex items-center justify-between"><div class="flex items-center gap-2"><i data-lucide="receipt" class="w-5 h-5 text-blue-500"></i><h4 class="font-bold text-slate-900">3 Transaksi Terakhir</h4></div><button onclick="switchTab('history')" class="text-xs font-semibold text-emerald-600 hover:text-emerald-700 flex items-center gap-1">Lihat Semua <i data-lucide="chevron-right" class="w-4 h-4"></i></button></div><div class="divide-y divide-slate-100 overflow-y-auto"><table class="w-full text-left border-collapse"><thead><tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider"><th class="py-3 px-5">ID</th><th class="py-3 px-5">Waktu</th><th class="py-3 px-5">Metode</th><th class="py-3 px-5 text-right">Total</th></tr></thead><tbody id="recent-transactions-list" class="divide-y divide-slate-100 text-sm"></tbody></table></div></div>
                             <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm flex flex-col overflow-hidden"><div class="p-5 border-b border-slate-100 flex items-center gap-2"><i data-lucide="trending-up" class="w-5 h-5 text-emerald-500"></i><h4 class="font-bold text-slate-900">Tabel Laba & Margin</h4></div><div class="divide-y divide-slate-100 overflow-y-auto max-h-[250px]"><table class="w-full text-left border-collapse"><thead><tr class="bg-slate-50 text-slate-400 text-[10px] uppercase font-bold tracking-wider"><th class="py-3 px-5">ID</th><th class="py-3 px-5 text-right">Penjualan</th><th class="py-3 px-5 text-right">Modal</th><th class="py-3 px-5 text-right text-emerald-600">Laba</th><th class="py-3 px-5 text-center">Margin</th></tr></thead><tbody id="profit-analysis-list" class="divide-y divide-slate-100 text-sm"></tbody></table></div></div>
                         </div>
-                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-6 h-fit">
-                            <div><h4 class="font-bold text-slate-900 mb-2">Integrasi GAS</h4><p class="text-xs text-slate-500 leading-relaxed mb-4">Hubungkan ke Google Sheet untuk database real-time.</p><div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-xs space-y-2.5"><div class="flex gap-2"><div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-[10px] shrink-0">1</div><span>Buka Google Sheet > Ekstensi > Apps Script.</span></div><div class="flex gap-2"><div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-[10px] shrink-0">2</div><span>Salin kode dari halaman Pengaturan.</span></div></div></div>
-                            <button onclick="switchTab('settings')" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl text-xs flex items-center justify-center gap-2 shadow-md"><i data-lucide="link" class="w-4 h-4"></i>Sambungkan Database</button>
-                        </div>
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between space-y-6 h-fit"><div><h4 class="font-bold text-slate-900 mb-2">Integrasi GAS</h4><p class="text-xs text-slate-500 leading-relaxed mb-4">Hubungkan ke Google Sheet untuk database real-time.</p><div class="bg-slate-50 rounded-xl p-4 border border-slate-100 text-xs space-y-2.5"><div class="flex gap-2"><div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-[10px] shrink-0">1</div><span>Buka Google Sheet > Ekstensi > Apps Script.</span></div><div class="flex gap-2"><div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-[10px] shrink-0">2</div><span>Salin kode dari halaman Pengaturan.</span></div></div></div><button onclick="switchTab('settings')" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl text-xs flex items-center justify-center gap-2 shadow-md"><i data-lucide="link" class="w-4 h-4"></i>Sambungkan Database</button></div>
                     </div>
                 </section>
 
@@ -160,18 +148,21 @@ function readSheetData(sheet) { var v = sheet.getDataRange().getValues(); var h 
     <script>
         const DEFAULT_PRODUCTS = [ { id: 1, code: "BRG-001", name: "Kopi Susu Gula Aren", costPrice: 10000, price: 18000, stock: 25, category: "Minuman" }, { id: 2, code: "BRG-002", name: "Roti Bakar Keju", costPrice: 9000, price: 15000, stock: 12, category: "Makanan" }, { id: 3, code: "BRG-003", name: "Keripik Singkong Pedas", costPrice: 6000, price: 10000, stock: 45, category: "Makanan" }, { id: 4, code: "BRG-004", name: "Teh Tarik Klasik", costPrice: 7000, price: 12000, stock: 3, category: "Minuman" }, { id: 5, code: "BRG-005", name: "Beras Premium 5kg", costPrice: 58000, price: 68000, stock: 15, category: "Sembako" }, { id: 6, code: "BRG-006", name: "Minyak Goreng 2L", costPrice: 28000, price: 34000, stock: 8, category: "Sembako" }, { id: 7, code: "BRG-007", name: "Sapu Lantai Microfiber", costPrice: 18000, price: 27500, stock: 4, category: "Kebutuhan Rumah" } ];
         let products = []; let cart = []; let transactions = []; let selectedCategory = "Semua"; let selectedPaymentMethod = "Tunai"; let isApiActive = false; let gasApiUrl = ""; let currentReceiptTransaction = null;
-        
-        // DASHBOARD PERIOD STATE
         let dashboardPeriod = { start: getLocalDateString(new Date()), end: getLocalDateString(new Date()), label: "Hari Ini" };
         function getLocalDateString(date) { return date.toISOString().split('T')[0]; }
-
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playBeep(type) { const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.frequency.setValueAtTime(type==='success'?600:type==='error'?300:800, audioCtx.currentTime); if(type==='success') o.frequency.setValueAtTime(900, audioCtx.currentTime + 0.1); g.gain.setValueAtTime(0.5, audioCtx.currentTime); o.start(); o.stop(audioCtx.currentTime + 0.2); }
 
         window.addEventListener('DOMContentLoaded', () => { initApp(); lucide.createIcons(); });
         function initApp() { const s = localStorage.getItem("smartpos_session"); const u = localStorage.getItem("smartpos_gas_url"); if(u){gasApiUrl=u; document.getElementById('api-url-input').value=gasApiUrl;} loadData(); if(s==="loggedIn") showMainApp(); else showLoginScreen(); document.getElementById('sidebar-toggle').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('-translate-x-full')); document.querySelectorAll('.nav-btn').forEach(b => b.addEventListener('click', () => { if(window.innerWidth<1024) document.getElementById('sidebar').classList.add('-translate-x-full'); })); }
         document.getElementById('login-form').addEventListener('submit', (e) => { e.preventDefault(); if(document.getElementById('login-username').value==='admin' && document.getElementById('login-password').value==='admin123'){ document.getElementById('login-error').classList.add('hidden'); localStorage.setItem("smartpos_session","loggedIn"); showMainApp(); } else { document.getElementById('login-error').classList.remove('hidden'); playBeep('error'); } });
-        function showLoginScreen() { document.getElementById('login-screen').classList.remove('hidden'); document.getElementById('main-app').classList.add('hidden'); }
+        function showLoginScreen() { 
+            document.getElementById('login-screen').classList.remove('hidden'); 
+            document.getElementById('main-app').classList.add('hidden'); 
+            // PAKSA KOSONGKAN INPUT SAAT LOGOUT / KEMBALI KE LOGIN
+            document.getElementById('login-username').value = ''; 
+            document.getElementById('login-password').value = ''; 
+        }
         function showMainApp() { document.getElementById('login-screen').classList.add('hidden'); document.getElementById('main-app').classList.remove('hidden'); switchTab('dashboard'); updateIndicator(); }
         function logout() { localStorage.removeItem("smartpos_session"); showLoginScreen(); }
 
@@ -183,98 +174,13 @@ function readSheetData(sheet) { var v = sheet.getDataRange().getValues(); var h 
         async function testApiConnection() { const i=document.getElementById('api-url-input').value.trim(); if(!i){showNotification("Masukkan URL","warning");return;} showNotification("Mencoba...","info"); try{const r=await fetch(`${i}?action=getData`);if(r.ok){const res=await r.json();if(res.success){showNotification("Berhasil!","success");gasApiUrl=i;localStorage.setItem("smartpos_gas_url",gasApiUrl);isApiActive=true;loadData();}else showNotification("Gagal baca DB","warning");}else showNotification("Error","error");}catch(e){showNotification("Gagal","error");} updateIndicator(); }
         function resetApiUrl() { localStorage.removeItem("smartpos_gas_url");gasApiUrl="";document.getElementById('api-url-input').value="";isApiActive=false;showNotification("Mode Lokal","info");updateIndicator();loadData(); }
         function updateIndicator() { const d=document.getElementById('indicator-dot'),t=document.getElementById('indicator-text'),s=document.getElementById('sync-info-header'); if(isApiActive){d.className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse";t.innerText="Online";t.className="text-emerald-700 font-semibold";document.getElementById('api-indicator').className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-emerald-200 bg-emerald-50";s.innerText="DB: Connected";s.className="text-xs text-emerald-600 font-semibold bg-emerald-50 py-1.5 px-3 rounded-md";}else{d.className="w-2.5 h-2.5 rounded-full bg-amber-500";t.innerText="Local";t.className="text-amber-700 font-semibold";document.getElementById('api-indicator').className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border border-amber-200 bg-amber-50";s.innerText="DB: Local";s.className="text-xs text-amber-600 font-semibold bg-amber-50 py-1.5 px-3 rounded-md";} }
-
         function switchTab(tabId) { document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden')); document.getElementById(`tab-${tabId}`).classList.remove('hidden'); document.querySelectorAll('.nav-btn').forEach(btn => btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium transition-all group text-slate-400 hover:bg-slate-800/50 hover:text-white"); const ab=document.getElementById(`nav-${tabId}`); if(ab) ab.className="nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all group bg-emerald-600 text-white shadow-lg shadow-emerald-600/10"; const t=document.getElementById('page-title'),st=document.getElementById('page-subtitle'); if(tabId==="dashboard"){t.innerText="Dashboard Utama";st.innerText="Ringkasan penjualan & pantau modal";} else if(tabId==="cashier"){t.innerText="Kasir (POS)";st.innerText="Input pesanan";renderCashierCategories();renderCashierProducts();} else if(tabId==="products"){t.innerText="Kelola Produk";st.innerText="Atur stok";renderProductTable();} else if(tabId==="history"){t.innerText="Riwayat Penjualan";st.innerText="Seluruh data transaksi";renderHistoryTable();} else if(tabId==="settings"){t.innerText="Pengaturan";st.innerText="Database & API GAS";} updateUiComponents(); }
 
-        // PERIOD FILTER LOGIC
-        function setPeriod(period) {
-            const today = new Date(); let start, end, label;
-            if(period === 'today') { start = getLocalDateString(today); end = start; label = "Hari Ini"; }
-            else if(period === 'yesterday') { const y = new Date(today); y.setDate(y.getDate() - 1); start = getLocalDateString(y); end = start; label = "Kemarin"; }
-            else if(period === '7days') { const s = new Date(today); s.setDate(s.getDate() - 6); start = getLocalDateString(s); end = getLocalDateString(today); label = "7 Hari Terakhir"; }
-            else if(period === '30days') { const s = new Date(today); s.setDate(s.getDate() - 29); start = getLocalDateString(s); end = getLocalDateString(today); label = "30 Hari Terakhir"; }
-            else if(period === 'thisMonth') { const s = new Date(today.getFullYear(), today.getMonth(), 1); start = getLocalDateString(s); end = getLocalDateString(today); label = "Bulan Ini"; }
-            
-            dashboardPeriod = { start, end, label };
-            updatePeriodBtns(period);
-            updateUiComponents();
-        }
+        function setPeriod(period) { const today = new Date(); let start, end, label; if(period === 'today') { start = getLocalDateString(today); end = start; label = "Hari Ini"; } else if(period === 'yesterday') { const y = new Date(today); y.setDate(y.getDate() - 1); start = getLocalDateString(y); end = start; label = "Kemarin"; } else if(period === '7days') { const s = new Date(today); s.setDate(s.getDate() - 6); start = getLocalDateString(s); end = getLocalDateString(today); label = "7 Hari Terakhir"; } else if(period === '30days') { const s = new Date(today); s.setDate(s.getDate() - 29); start = getLocalDateString(s); end = getLocalDateString(today); label = "30 Hari Terakhir"; } else if(period === 'thisMonth') { const s = new Date(today.getFullYear(), today.getMonth(), 1); start = getLocalDateString(s); end = getLocalDateString(today); label = "Bulan Ini"; } dashboardPeriod = { start, end, label }; updatePeriodBtns(period); updateUiComponents(); }
+        function applyCustomDate() { const s = document.getElementById('start-date').value; const e = document.getElementById('end-date').value; if(!s || !e) { showNotification("Pilih tanggal mulai dan akhir", "warning"); return; } if(e < s) { showNotification("Tanggal akhir harus setelah tanggal mulai", "warning"); return; } dashboardPeriod = { start: s, end: e, label: `${s} s/d ${e}` }; updatePeriodBtns('custom'); updateUiComponents(); }
+        function updatePeriodBtns(activePeriod) { document.querySelectorAll('.period-btn').forEach(btn => { btn.className = "period-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200"; }); if(activePeriod !== 'custom' && event && event.target) { event.target.className = "period-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-emerald-600 text-white shadow-sm"; } }
 
-        function applyCustomDate() {
-            const s = document.getElementById('start-date').value;
-            const e = document.getElementById('end-date').value;
-            if(!s || !e) { showNotification("Pilih tanggal mulai dan akhir", "warning"); return; }
-            if(e < s) { showNotification("Tanggal akhir harus setelah tanggal mulai", "warning"); return; }
-            dashboardPeriod = { start: s, end: e, label: `${s} s/d ${e}` };
-            updatePeriodBtns('custom');
-            updateUiComponents();
-        }
-
-        function updatePeriodBtns(activePeriod) {
-            document.querySelectorAll('.period-btn').forEach(btn => {
-                btn.className = "period-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-slate-100 text-slate-600 hover:bg-slate-200";
-            });
-            // No specific button highlighted if custom
-            if(activePeriod !== 'custom') {
-                event.target.className = "period-btn px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-emerald-600 text-white shadow-sm";
-            }
-        }
-
-        function updateUiComponents() {
-            // Filter transactions based on selected period
-            const filteredTrx = transactions.filter(t => {
-                const trxDate = t.date.split('T')[0]; // YYYY-MM-DD
-                return trxDate >= dashboardPeriod.start && trxDate <= dashboardPeriod.end;
-            });
-
-            const totalRevenue = filteredTrx.reduce((s, t) => s + t.total, 0);
-            let totalProfit = 0; let totalCostSold = 0;
-            
-            filteredTrx.forEach(trx => { 
-                let trxCost = 0; 
-                trx.items.forEach(item => { const mp = products.find(p => p.id === item.product.id); const cp = mp ? mp.costPrice : (item.product.costPrice || Math.round(item.product.price * 0.7)); trxCost += (cp * item.quantity); }); 
-                const netRev = trx.subtotal - trx.discount; 
-                totalProfit += (netRev - trxCost); 
-                totalCostSold += trxCost; 
-            });
-            
-            // Update Stats Labels & Values dynamically
-            document.getElementById('stat-revenue-label').innerText = `Pendapatan (${dashboardPeriod.label})`;
-            document.getElementById('stat-profit-label').innerText = `Laba Bersih (${dashboardPeriod.label})`;
-            document.getElementById('stat-transactions-label').innerText = `Transaksi (${dashboardPeriod.label})`;
-
-            document.getElementById('stat-revenue').innerText = formatRupiah(totalRevenue); 
-            document.getElementById('stat-profit').innerText = formatRupiah(totalProfit); 
-            document.getElementById('stat-transactions').innerText = filteredTrx.length; 
-            document.getElementById('stat-products').innerText = products.length;
-            const warningProducts = products.filter(p => p.stock < 5); document.getElementById('stat-warning').innerText = warningProducts.length;
-
-            // Capital Tracking (Always based on CURRENT state, not period)
-            let totalCurrentCapital = 0; const categoryData = {};
-            products.forEach(p => { const itemCapital = p.costPrice * p.stock; totalCurrentCapital += itemCapital; if (!categoryData[p.category]) { categoryData[p.category] = { itemCount: 0, totalStock: 0, totalCapital: 0 }; } categoryData[p.category].itemCount++; categoryData[p.category].totalStock += p.stock; categoryData[p.category].totalCapital += itemCapital; });
-            const totalInitialCapital = totalCurrentCapital + totalCostSold; 
-            document.getElementById('stat-initial-capital').innerText = formatRupiah(totalInitialCapital); document.getElementById('stat-remaining-capital').innerText = formatRupiah(totalCurrentCapital);
-
-            const catTbody = document.getElementById('capital-category-list'); const catTfoot = document.getElementById('capital-category-footer'); catTbody.innerHTML = ''; catTfoot.innerHTML = '';
-            let colorIndex = 0; const catColors = ["bg-indigo-50 text-indigo-700", "bg-emerald-50 text-emerald-700", "bg-amber-50 text-amber-700", "bg-blue-50 text-blue-700", "bg-purple-50 text-purple-700"];
-            for (const [cat, data] of Object.entries(categoryData)) { const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 border-b border-slate-100 text-xs"; tr.innerHTML = `<td class="py-3 px-5 font-semibold"><span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${catColors[colorIndex % catColors.length]}">${cat}</span></td><td class="py-3 px-5 text-center text-slate-600">${data.itemCount}</td><td class="py-3 px-5 text-right font-medium text-slate-700">${data.totalStock.toLocaleString('id-ID')}</td><td class="py-3 px-5 text-right font-bold text-indigo-600">${formatRupiah(data.totalCapital)}</td>`; catTbody.appendChild(tr); colorIndex++; }
-            catTfoot.innerHTML = `<tr><td class="py-3 px-5 font-extrabold" colspan="3">TOTAL ASET GUDANG</td><td class="py-3 px-5 text-right font-extrabold text-indigo-700">${formatRupiah(totalCurrentCapital)}</td></tr>`;
-
-            // Recent Transactions & Profit Table (Uses period filter)
-            const recentTbody = document.getElementById('recent-transactions-list'); recentTbody.innerHTML = ''; const profitTbody = document.getElementById('profit-analysis-list'); profitTbody.innerHTML = '';
-            const sortedTrx = [...filteredTrx].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3); 
-            if (sortedTrx.length === 0) { recentTbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-xs">Tidak ada transaksi di periode ini</td></tr>`; profitTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 text-xs">Tidak ada data laba</td></tr>`; } 
-            else {
-                sortedTrx.forEach(t => {
-                    const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50"; tr.innerHTML = `<td class="py-3 px-5 font-mono font-bold text-slate-700">${t.id}</td><td class="py-3 px-5 text-xs text-slate-400">${new Date(t.date).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})}</td><td class="py-3 px-5"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${t.paymentMethod === 'Tunai' ? 'bg-emerald-50 text-emerald-600' : 'bg-indigo-50 text-indigo-600'}">${t.paymentMethod}</span></td><td class="py-3 px-5 text-right font-bold text-slate-800">${formatRupiah(t.total)}</td>`;
-                    recentTbody.appendChild(tr);
-                    let totalModalOfTrx = 0; t.items.forEach(item => { const mp = products.find(p => p.id === item.product.id); const cost = mp ? mp.costPrice : (item.product.costPrice || Math.round(item.product.price * 0.7)); totalModalOfTrx += (cost * item.quantity); });
-                    const netSales = t.subtotal - t.discount; const trxProfit = netSales - totalModalOfTrx; const marginPct = netSales > 0 ? Math.round((trxProfit / netSales) * 100) : 0;
-                    const trP = document.createElement('tr'); trP.className = "hover:bg-slate-50"; trP.innerHTML = `<td class="py-3 px-5 font-mono font-bold text-slate-700">${t.id}</td><td class="py-3 px-5 text-right font-medium text-slate-700">${formatRupiah(t.total)}</td><td class="py-3 px-5 text-right text-slate-500">${formatRupiah(totalModalOfTrx)}</td><td class="py-3 px-5 text-right font-bold text-emerald-600">+${formatRupiah(trxProfit)}</td><td class="py-3 px-5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${marginPct >= 30 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${marginPct}%</span></td>`;
-                    profitTbody.appendChild(trP);
-                });
-            }
-        }
+        function updateUiComponents() { const filteredTrx = transactions.filter(t => { const trxDate = t.date.split('T')[0]; return trxDate >= dashboardPeriod.start && trxDate <= dashboardPeriod.end; }); const totalRevenue = filteredTrx.reduce((s, t) => s + t.total, 0); let totalProfit = 0; let totalCostSold = 0; filteredTrx.forEach(trx => { let trxCost = 0; trx.items.forEach(item => { const mp = products.find(p => p.id === item.product.id); const cp = mp ? mp.costPrice : (item.product.costPrice || Math.round(item.product.price * 0.7)); trxCost += (cp * item.quantity); }); const netRev = trx.subtotal - trx.discount; totalProfit += (netRev - trxCost); totalCostSold += trxCost; }); document.getElementById('stat-revenue-label').innerText = `Pendapatan (${dashboardPeriod.label})`; document.getElementById('stat-profit-label').innerText = `Laba Bersih (${dashboardPeriod.label})`; document.getElementById('stat-transactions-label').innerText = `Transaksi (${dashboardPeriod.label})`; document.getElementById('stat-revenue').innerText = formatRupiah(totalRevenue); document.getElementById('stat-profit').innerText = formatRupiah(totalProfit); document.getElementById('stat-transactions').innerText = filteredTrx.length; document.getElementById('stat-products').innerText = products.length; const warningProducts = products.filter(p => p.stock < 5); document.getElementById('stat-warning').innerText = warningProducts.length; let totalCurrentCapital = 0; const categoryData = {}; products.forEach(p => { const itemCapital = p.costPrice * p.stock; totalCurrentCapital += itemCapital; if (!categoryData[p.category]) { categoryData[p.category] = { itemCount: 0, totalStock: 0, totalCapital: 0 }; } categoryData[p.category].itemCount++; categoryData[p.category].totalStock += p.stock; categoryData[p.category].totalCapital += itemCapital; }); const totalInitialCapital = totalCurrentCapital + totalCostSold; document.getElementById('stat-initial-capital').innerText = formatRupiah(totalInitialCapital); document.getElementById('stat-remaining-capital').innerText = formatRupiah(totalCurrentCapital); const catTbody = document.getElementById('capital-category-list'); const catTfoot = document.getElementById('capital-category-footer'); catTbody.innerHTML = ''; catTfoot.innerHTML = ''; let colorIndex = 0; const catColors = ["bg-indigo-50 text-indigo-700", "bg-emerald-50 text-emerald-700", "bg-amber-50 text-amber-700", "bg-blue-50 text-blue-700", "bg-purple-50 text-purple-700"]; for (const [cat, data] of Object.entries(categoryData)) { const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 border-b border-slate-100 text-xs"; tr.innerHTML = `<td class="py-3 px-5 font-semibold"><span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${catColors[colorIndex % catColors.length]}">${cat}</span></td><td class="py-3 px-5 text-center text-slate-600">${data.itemCount}</td><td class="py-3 px-5 text-right font-medium text-slate-700">${data.totalStock.toLocaleString('id-ID')}</td><td class="py-3 px-5 text-right font-bold text-indigo-600">${formatRupiah(data.totalCapital)}</td>`; catTbody.appendChild(tr); colorIndex++; } catTfoot.innerHTML = `<tr><td class="py-3 px-5 font-extrabold" colspan="3">TOTAL ASET GUDANG</td><td class="py-3 px-5 text-right font-extrabold text-indigo-700">${formatRupiah(totalCurrentCapital)}</td></tr>`; const recentTbody = document.getElementById('recent-transactions-list'); recentTbody.innerHTML = ''; const profitTbody = document.getElementById('profit-analysis-list'); profitTbody.innerHTML = ''; const sortedTrx = [...filteredTrx].sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3); if (sortedTrx.length === 0) { recentTbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400 text-xs">Tidak ada transaksi di periode ini</td></tr>`; profitTbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-slate-400 text-xs">Tidak ada data laba</td></tr>`; } else { sortedTrx.forEach(t => { const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50"; tr.innerHTML = `<td class="py-3 px-5 font-mono font-bold text-slate-700">${t.id}</td><td class="py-3 px-5 text-xs text-slate-400">${new Date(t.date).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'})}</td><td class="py-3 px-5"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${t.paymentMethod === 'Tunai' ? 'bg-emerald-50 text-emerald-600' : 'bg-indigo-50 text-indigo-600'}">${t.paymentMethod}</span></td><td class="py-3 px-5 text-right font-bold text-slate-800">${formatRupiah(t.total)}</td>`; recentTbody.appendChild(tr); let totalModalOfTrx = 0; t.items.forEach(item => { const mp = products.find(p => p.id === item.product.id); const cost = mp ? mp.costPrice : (item.product.costPrice || Math.round(item.product.price * 0.7)); totalModalOfTrx += (cost * item.quantity); }); const netSales = t.subtotal - t.discount; const trxProfit = netSales - totalModalOfTrx; const marginPct = netSales > 0 ? Math.round((trxProfit / netSales) * 100) : 0; const trP = document.createElement('tr'); trP.className = "hover:bg-slate-50"; trP.innerHTML = `<td class="py-3 px-5 font-mono font-bold text-slate-700">${t.id}</td><td class="py-3 px-5 text-right font-medium text-slate-700">${formatRupiah(t.total)}</td><td class="py-3 px-5 text-right text-slate-500">${formatRupiah(totalModalOfTrx)}</td><td class="py-3 px-5 text-right font-bold text-emerald-600">+${formatRupiah(trxProfit)}</td><td class="py-3 px-5 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${marginPct >= 30 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${marginPct}%</span></td>`; profitTbody.appendChild(trP); }); } }
 
         function renderCashierCategories() { const cs = new Set(products.map(p => p.category)); const c = document.getElementById('cashier-categories'); c.innerHTML = ''; ["Semua", ...cs].forEach(cat => { const b = document.createElement('button'); b.innerText = cat; b.onclick = () => { selectedCategory = cat; renderCashierCategories(); renderCashierProducts(); }; b.className = selectedCategory === cat ? "px-3.5 py-1.5 bg-emerald-600 text-white rounded-lg text-xs font-semibold shrink-0" : "px-3.5 py-1.5 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg text-xs font-medium shrink-0"; c.appendChild(b); }); }
         function renderCashierProducts() { const g = document.getElementById('cashier-product-grid'); g.innerHTML = ''; const sk = document.getElementById('cashier-search').value.toLowerCase(); const f = products.filter(p => (selectedCategory === "Semua" || p.category === selectedCategory) && (p.name.toLowerCase().includes(sk) || p.code.toLowerCase().includes(sk))); if (f.length === 0) { g.innerHTML = `<div class="col-span-full py-10 text-center text-slate-400 text-sm">Tidak ditemukan.</div>`; return; } f.forEach(p => { const c = document.createElement('div'); c.className = "bg-white p-4 rounded-xl border border-slate-200 hover:border-emerald-300 shadow-sm flex flex-col justify-between transition-all hover:shadow-md select-none group"; let bc = "bg-slate-100 text-slate-600"; if (p.category === "Minuman") bc = "bg-sky-50 text-sky-600"; else if (p.category === "Makanan") bc = "bg-amber-50 text-amber-600"; else if (p.category === "Sembako") bc = "bg-emerald-50 text-emerald-600"; c.innerHTML = `<div class="space-y-1"><div class="flex items-center justify-between mb-1.5"><span class="text-[9px] uppercase font-bold px-2 py-0.5 rounded-full ${bc}">${p.category}</span><span class="text-[9px] font-mono text-slate-400">${p.code}</span></div><h5 class="font-bold text-slate-900 text-xs line-clamp-2">${p.name}</h5></div><div class="mt-4 pt-3 border-t border-slate-50 flex items-end justify-between"><div><span class="text-[10px] text-slate-400 block">Harga</span><span class="font-bold text-slate-900 text-xs">${formatRupiah(p.price)}</span></div><div class="text-right"><span class="text-[9px] block mb-1 ${p.stock <= 3 ? 'text-red-500 font-bold animate-pulse' : 'text-slate-400'}">Stok: ${p.stock}</span><button onclick="addToCart(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="p-1.5 rounded-lg ${p.stock <= 0 ? 'bg-slate-100 text-slate-300 cursor-not-allowed' : 'bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white'} transition-colors"><i data-lucide="plus" class="w-4 h-4"></i></button></div></div>`; g.appendChild(c); }); lucide.createIcons(); }
