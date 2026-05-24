@@ -373,13 +373,7 @@ function readSheetData(sheet) { var v = sheet.getDataRange().getValues(); var h 
 
     <script>
         const DEFAULT_PRODUCTS = [
-            { id: 1, code: "BRG-001", name: "Kopi Susu Gula Aren", costPrice: 10000, price: 18000, stock: 25, category: "Minuman" },
-            { id: 2, code: "BRG-002", name: "Roti Bakar Keju", costPrice: 9000, price: 15000, stock: 12, category: "Makanan" },
-            { id: 3, code: "BRG-003", name: "Keripik Singkong Pedas", costPrice: 6000, price: 10000, stock: 45, category: "Makanan" },
-            { id: 4, code: "BRG-004", name: "Teh Tarik Klasik", costPrice: 7000, price: 12000, stock: 3, category: "Minuman" },
-            { id: 5, code: "BRG-005", name: "Beras Premium 5kg", costPrice: 58000, price: 68000, stock: 15, category: "Sembako" },
-            { id: 6, code: "BRG-006", name: "Minyak Goreng 2L", costPrice: 28000, price: 34000, stock: 8, category: "Sembako" },
-            { id: 7, code: "BRG-007", name: "Sapu Lantai Microfiber", costPrice: 18000, price: 27500, stock: 4, category: "Kebutuhan Rumah" }
+            
         ];
 
         let products = []; let cart = []; let transactions = []; let selectedCategory = "Semua"; let selectedPaymentMethod = "Tunai"; let isApiActive = false; let gasApiUrl = ""; let currentReceiptTransaction = null;
